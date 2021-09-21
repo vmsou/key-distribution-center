@@ -22,8 +22,13 @@ public class Engine {
     public void send(int id, String message) {
         UserEntity to = getUser(id);
         Message msg = kdc.send(user, to, message);
-        global.add(msg);
-        to.add(msg);
+        if (msg != null) {
+            global.add(msg);
+            to.add(msg);
+        } else {
+            System.out.println("Não foi possível enviar a mensagem");
+        }
+
     }
 
     public UserEntity create(String name) {

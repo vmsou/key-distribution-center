@@ -11,6 +11,10 @@ public abstract class Entity {
     private int id;
     private String name;
 
+    public Entity(int id) {
+        setId(id);
+    }
+
     public Entity(int id, String name) {
         setId(id);
         setName(name);
@@ -46,7 +50,7 @@ class UserEntity extends Entity {
     public void showMessages() {
         System.out.println("Mensagens de " + getName());
         for (Message m : messages.values())
-            System.out.println(m.getSender() + ": " + m.decryptedText(masterKey));
+            System.out.println(m.decryptedText(masterKey));
     }
 
     public ProofMessage send(UserEntity receiver, String message) throws IllegalBlockSizeException, NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException {

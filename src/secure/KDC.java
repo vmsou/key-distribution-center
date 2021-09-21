@@ -37,10 +37,12 @@ public class KDC extends Entity {
             // Bob sends message to KDC with id, AES(id), AES(receiver), AES(message)
             ProofMessage msg = from.send(to, message);
             if (Main.DEBUG) System.out.println(from.getName() + " enviou mensagem para KDC");
+            engine.global.add(msg);
 
             // KDC sends to Bob his session key and alice's session key
             SessionMessage sessionMessage = receive(msg);   // SessionKey refreshed
             if (Main.DEBUG) System.out.println("KDC enviou as chaves de sessões para " +  from.getName());
+            engine.global.add(sessionMessage);
 
             if (sessionMessage != null) {   // Proof was correct
                 if (Main.DEBUG) System.out.println(from.getName() + " comprovou que tinha a chave mestre");
@@ -52,10 +54,12 @@ public class KDC extends Entity {
                 // Alice sends nonce to bob
                 NonceMessage nonceMessage = to.send(Main.genNonce(), toSessionKey);
                 if (Main.DEBUG) System.out.println("to.getName() manda nonce para " + from.getName());
+                engine.global.add(nonceMessage);
 
                 // Bob receives and updates nonce number
                 NonceMessage fromNonce = from.receive(nonceMessage, fromSessionKey);
                 if (Main.DEBUG) System.out.println(from.getName() + " atualiza o nonce");
+                engine.global.add(fromNonce);
 
                 // Alice updates her nonce and compares with bob nonce
                 if (Main.DEBUG) System.out.println(to.getName() + " esta verificando o nonce");
@@ -64,8 +68,9 @@ public class KDC extends Entity {
                     byte[] msgSessionDecrypted = sessionMessage.decrypt(toSessionKey);
                     byte[] msgMasterEncrypted = AES.encrypt(msgSessionDecrypted, to.getMasterKey());
 
-                    return new Message(
+                    return new SendMessage(
                             msg.getSender(),
+                            to.getId(),
                             msgMasterEncrypted);
                 } else {
                     System.out.println("Nonce falhou.");
@@ -104,12 +109,15 @@ public class KDC extends Entity {
                     getId(),
                     AES.encrypt(sessionKey, senderKey)
             );
+            engine.global.add(session1);
 
             // sessionKey encrypted with receiver keys
             Message session2 = new Message(
                     getId(),
                     AES.encrypt(sessionKey, receiverKey)
             );
+            engine.global.add(session2);
+
             resetSessionKey();
             return new SessionMessage(proofMessage, session1, session2);
         }
@@ -119,13 +127,10 @@ public class KDC extends Entity {
 
     public MasterKey getMaster(int id) { return masterKeys.get(id); }
 
-
     public static byte[] genKey(int len) {
         byte[] newKey = new byte[len];
         new Random().nextBytes(newKey);
-        String toReplace = new String(newKey);
-        toReplace = toReplace.replace(',', ' ');
-        return toReplace.getBytes(StandardCharsets.UTF_8);
+        return newKey;
     }
 
     public void resetSessionKey() {sessionKey.setKey(genKey(32)); }

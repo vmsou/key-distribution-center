@@ -1,18 +1,25 @@
 package secure;
 
-import java.util.Arrays;
-
 public class Message extends Entity {
     static int count;
     private int sender;
     private byte[] message;
 
     public Message(int sender, byte[] message) {
-        super(count, "MESSAGE");
+        super(count);
+        setName("MESSAGE");
         setSender(sender);
         setMessage(message);
         ++count;
     }
+
+    public Message(String name, int sender, byte[] message) {
+        super(count, name);
+        setSender(sender);
+        setMessage(message);
+        ++count;
+    }
+
     // Methods
     public byte[] encrypt(SecretKey secretKey) {
         try {
@@ -45,15 +52,12 @@ public class Message extends Entity {
 
     @Override
     public String toString() {
-        return "Message{" +
-                "sender=" + sender +
-                ", message=" + new String(message) +
-                '}';
+        return new String(getMessage());
     }
 
     @Override
     public String toSave() {
-        return String.valueOf(getId()) + ',' + getName() + ',' + String.valueOf(sender) + ',' + new String(message);
+        return String.valueOf(getId()) + "," + getName() + "," + sender + "," + this;
     }
 }
 
@@ -62,7 +66,7 @@ class ProofMessage extends Message {
     private byte[] receiver;
 
     public ProofMessage(int sender, byte[] proof, byte[] receiver, byte[] message) {
-        super(sender, message);
+        super("PROOF", sender, message);
         setProof(proof);
         setReceiver(receiver);
     }
@@ -80,21 +84,20 @@ class ProofMessage extends Message {
     public void setReceiver(byte[] receiver) { this.receiver = receiver; }
 
     @Override
-    public String toString() {
-        return "ProofMessage{" +
-                "proof=" + Arrays.toString(proof) +
-                ", receiver=" + Arrays.toString(receiver) +
-                '}';
+    public String toSave() {
+        return getId() + "," + getName() + "," + getSender() + "," + new String(getProof()) +
+                new String(getReceiver()) + "," + this;
     }
+
 }
 
 class SessionMessage extends Message {
     private ProofMessage proofMessage;
     private Message session1, session2;
 
-    public SessionMessage(ProofMessage idMessage, Message session1, Message session2) {
-        super(session1.getSender(), idMessage.getMessage());
-        setProofMessage(idMessage);
+    public SessionMessage(ProofMessage proofMessage, Message session1, Message session2) {
+        super("SESSION", session1.getSender(), proofMessage.getMessage());
+        setProofMessage(proofMessage);
         setSession1(session1);
         setSession2(session2);
     }
@@ -103,6 +106,8 @@ class SessionMessage extends Message {
 
     public void setProofMessage(ProofMessage proofMessage) { this.proofMessage = proofMessage; }
 
+    public String getReceiver() { return new String(proofMessage.getReceiver()); }
+
     public Message getSession1() { return session1; }
 
     public void setSession1(Message session1) { this.session1 = session1; }
@@ -110,11 +115,36 @@ class SessionMessage extends Message {
     public Message getSession2() { return session2; }
 
     public void setSession2(Message session2) { this.session2 = session2; }
+
+    @Override
+    public String toSave() {
+        return getId() + "," + getName() + "," + getSender() + "," + getReceiver() + ","  + getSession1() + "," + getSession2();
+    }
 }
 
 class NonceMessage extends Message {
     public NonceMessage(int sender, byte[] message) {
-        super(sender, message);
+        super("NONCE", sender, message);
     }
 }
 
+class SendMessage extends Message {
+    private int receiver;
+
+    // Constructors
+    public SendMessage(int sender, int receiver, byte[] message) {
+        super("SEND", sender, message);
+        setReceiver(receiver);
+    }
+
+    // Getters and Setters
+    public int getReceiver() { return receiver; }
+
+    public void setReceiver(int receiver) { this.receiver = receiver; }
+
+    @Override
+    public String toSave() {
+        return String.valueOf(
+                getId()) + "," + getName() + "," + getSender() + "," + getReceiver() + "," + this;
+    }
+}

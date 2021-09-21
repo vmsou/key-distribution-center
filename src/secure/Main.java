@@ -1,6 +1,5 @@
 package secure;
 
-import java.util.Arrays;
 import java.util.Random;
 
 public class Main {
@@ -9,14 +8,16 @@ public class Main {
     public static void main(String[] args) {
 	    Engine engine = new Engine();
 
-        UserEntity bob = engine.create("Bob");
+        UserEntity bob = engine.create("bob");
+        UserEntity alice = engine.create("alice");
         engine.setUser(bob);
 
-        byte[] test = {44, 16};
+        engine.send(alice.getId(), "MENSAGEM");
 
-        System.out.println(new String(test));
-        System.out.println(bob.getMasterKey());
-        System.out.println(Arrays.toString(bob.getMasterKey().toBytes()));
+        alice.showMessages();
+        System.out.println();
+
+        engine.close();
 
     }
     public static int genNonce() {
