@@ -25,7 +25,7 @@ public class KDC extends Entity {
     // Methods
     public HashMap<Integer, MasterKey> loadMasterKeys() {
         HashMap<Integer, MasterKey> keys = new HashMap<>();
-        for (UserEntity u : engine.global.users)
+        for (UserEntity u : engine.global.users.values())
             keys.put(u.getId(), u.getMasterKey());
         return keys;
     }

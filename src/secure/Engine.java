@@ -18,7 +18,11 @@ public class Engine {
     }
 
     // Methods
-    public Scanner fstream(String filename) {
+    public void send(int id, String message) {
+        UserEntity to = global.users.get(id);
+    }
+
+    public static Scanner fstream(String filename) {
         System.out.println("Lendo o arquivo '" + filename + '\'');
         try {
             File file = new File(filename);
@@ -31,12 +35,16 @@ public class Engine {
 
     public UserEntity load(String filename) {
         Scanner sc = fstream(filename);
-        String[] attr = sc.nextLine().split(",");
-        return new UserEntity(
-                Integer.parseInt(attr[0]),      // id
-                attr[1],                        // name
-                new MasterKey(attr[2].getBytes(StandardCharsets.UTF_8))
-        );
+        UserEntity user = null;
+        if (sc != null) {
+            String[] attr = sc.nextLine().split(",");
+            user = new UserEntity(
+                    Integer.parseInt(attr[0]),      // id
+                    attr[1],                        // name
+                    new MasterKey(attr[2].getBytes(StandardCharsets.UTF_8))
+            );
+        }
+        return user;
     }
 
     // Getters amd Setters

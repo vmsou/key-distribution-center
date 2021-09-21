@@ -2,13 +2,16 @@ package secure;
 
 import java.util.Arrays;
 
-public class Message {
+public class Message extends Entity {
+    static int count;
     private int sender;
     private byte[] message;
 
     public Message(int sender, byte[] message) {
+        super(count, "MESSAGE");
         setSender(sender);
         setMessage(message);
+        ++count;
     }
     // Methods
     public byte[] encrypt(SecretKey secretKey) {
