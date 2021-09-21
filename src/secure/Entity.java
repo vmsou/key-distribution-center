@@ -6,7 +6,6 @@ import javax.crypto.NoSuchPaddingException;
 import java.nio.ByteBuffer;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.concurrent.SynchronousQueue;
 
 public class Entity {
     static private int count = 0;
@@ -54,6 +53,7 @@ class UserEntity extends Entity {
     }
 
     public NonceMessage send(int nonce, SessionKey sessionKey) throws IllegalBlockSizeException, NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException {
+        System.out.println("Nonce gerado: " + nonce);
         return new NonceMessage(
                 getId(),
                 AES.encrypt(nonce, sessionKey));
@@ -61,7 +61,7 @@ class UserEntity extends Entity {
 
     public SessionKey receive(SessionMessage sessionMessage) throws IllegalBlockSizeException, NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException {
         byte[] encryptedSessionKey;
-        if (sessionMessage.getIdMessage().getSender() == getId())
+        if (sessionMessage.getProofMessage().getSender() == getId())
             encryptedSessionKey = sessionMessage.getSession1().getMessage();
         else
             encryptedSessionKey = sessionMessage.getSession2().getMessage();
@@ -79,8 +79,11 @@ class UserEntity extends Entity {
     }
 
     public boolean verifyNonce(NonceMessage oldNonce, NonceMessage newNonce, SessionKey sessionKey) throws IllegalBlockSizeException, NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException {
-        int nonce1 = ByteBuffer.wrap(oldNonce.getMessage()).getInt();
-        int nonce2 = ByteBuffer.wrap(newNonce.getMessage()).getInt();
+        byte[] decryptedOldNonce = AES.decrypt(oldNonce.getMessage(), sessionKey);
+        byte[] decryptedNewNonce = AES.decrypt(newNonce.getMessage(), sessionKey);
+
+        int nonce1 = ByteBuffer.wrap(decryptedOldNonce).getInt();
+        int nonce2 = ByteBuffer.wrap(decryptedNewNonce).getInt();
         int correctNonce = nonceFunc(nonce1);
 
         return nonce2 == correctNonce;

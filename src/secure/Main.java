@@ -14,19 +14,19 @@ public class Main {
 
         try {
             // Bob sends message to KDC with id, AES(id), AES(receiver), AES(message)
-            ProofMessage msg = bob.send(alice, "Teste");
+            ProofMessage msg = bob.send(alice, "Teste 123");
             System.out.println("Bob enviou mensagem para KDC");
 
             // KDC sends to Bob his session key and alice's session key
-            SessionMessage sessionMessage = kdc.receive(msg);
-            System.out.println("KDC enviou as chaves de sessões para bob");
+            SessionMessage sessionMessage = kdc.receive(msg);   // SessionKey refreshed
+            System.out.println("KDC enviou as chaves de sessões para Bob");
 
             if (sessionMessage != null) {   // Proof was correct
                 System.out.println("Bob comprovou que tinha a chave mestre");
                 // Bob receive his sessionKey and sends alice's sessionKey
                 SessionKey bobSessionKey = bob.receive(sessionMessage);
                 SessionKey aliceSessionKey = alice.receive(sessionMessage);
-                System.out.println("bob recebe sua chave de sessão e envia para alice");
+                System.out.println("Bob recebe sua chave de sessão e envia para alice");
 
                 // Alice sends nonce to bob
                 NonceMessage nonceMessage = alice.send(genNounce(), aliceSessionKey);
@@ -40,7 +40,7 @@ public class Main {
                 System.out.println("Alice esta verificando o nonce");
                 if (alice.verifyNonce(nonceMessage, bobNonce, aliceSessionKey)) {
                     System.out.println("Nonce correto.");
-                    System.out.println(new String(msg.getMessage()));
+                    System.out.println(new String(AES.decrypt(sessionMessage.getMessage(), aliceSessionKey)));
                 } else {
                     System.out.println("Nonce falhou.");
                 }

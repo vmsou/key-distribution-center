@@ -51,19 +51,19 @@ class ProofMessage extends Message {
 }
 
 class SessionMessage extends Message {
-    private ProofMessage idMessage;
+    private ProofMessage proofMessage;
     private Message session1, session2;
 
     public SessionMessage(ProofMessage idMessage, Message session1, Message session2) {
         super(session1.getSender(), idMessage.getMessage());
-        setIdMessage(idMessage);
+        setProofMessage(idMessage);
         setSession1(session1);
         setSession2(session2);
     }
 
-    public ProofMessage getIdMessage() { return idMessage; }
+    public ProofMessage getProofMessage() { return proofMessage; }
 
-    public void setIdMessage(ProofMessage idMessage) { this.idMessage = idMessage; }
+    public void setProofMessage(ProofMessage proofMessage) { this.proofMessage = proofMessage; }
 
     public Message getSession1() { return session1; }
 

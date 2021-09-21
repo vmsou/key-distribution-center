@@ -7,11 +7,10 @@ import java.nio.ByteBuffer;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
-import java.util.PropertyPermission;
 import java.util.Random;
 
 public class KDC extends Entity {
-    private HashMap<Integer, MasterKey> masterKeys; // DON'T EXPOSE IN THE WEB
+    private HashMap<Integer, MasterKey> masterKeys; // DON'T EXPOSE
     private SessionKey sessionKey;
 
     // Constructors
@@ -35,19 +34,27 @@ public class KDC extends Entity {
 
         // Verify proof
         if (proof == sender) {
-            // receives sessionKey encrypted with sender keys
+            // Update message with session key encryption
+            byte[] message = proofMessage.getMessage();
+            byte[] decryptedMessage = AES.decrypt(message, senderKey);
+            byte[] encryptedMessage = AES.encrypt(decryptedMessage, sessionKey);
+            proofMessage.setMessage(encryptedMessage);
+
+            // sessionKey encrypted with sender keys
             Message session1 = new Message(
                     getId(),
                     AES.encrypt(sessionKey, senderKey)
             );
 
-            // receives sessionKey encrypted with receiver keys
+            // sessionKey encrypted with receiver keys
             Message session2 = new Message(
                     getId(),
                     AES.encrypt(sessionKey, receiverKey)
             );
+            resetSessionKey();
             return new SessionMessage(proofMessage, session1, session2);
         }
+        resetSessionKey();
         return null;
     }
 
@@ -65,6 +72,8 @@ public class KDC extends Entity {
         new Random().nextBytes(newKey);
         return newKey;
     }
+
+    public void resetSessionKey() {sessionKey.setKey(genKey(32)); }
 
     // Getters and Setters
     public HashMap<Integer, MasterKey> getMasterKeys() { return masterKeys; }
