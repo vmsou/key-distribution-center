@@ -11,6 +11,28 @@ public class Message {
         setSender(sender);
         setMessage(message);
     }
+    // Methods
+    public byte[] encrypt(SecretKey secretKey) {
+        try {
+            return AES.encrypt(message, secretKey);
+        } catch (Exception e) {
+            System.out.println("Couldn't encrypt message");
+            return null;
+        }
+    }
+
+    public byte[] decrypt(SecretKey secretKey) {
+        try {
+            return AES.decrypt(message, secretKey);
+        } catch (Exception e) {
+            System.out.println("Couldn't decrypt message");
+            return null;
+        }
+    }
+
+    public String decryptedText(SecretKey secretKey) { return new String(decrypt(secretKey)); }
+
+    // Getters and Setters
     public int getSender() { return sender; }
 
     public void setSender(int sender) { this.sender = sender; }

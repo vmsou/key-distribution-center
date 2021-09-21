@@ -43,7 +43,7 @@ class UserEntity extends Entity {
 
     public void showMessages() {
         for (Message m : messages)
-            System.out.println(m);
+            System.out.println(m.getSender() + ": " + m.decryptedText(masterKey));
     }
 
     public ProofMessage send(UserEntity receiver, String message) throws IllegalBlockSizeException, NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException {

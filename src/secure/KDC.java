@@ -50,9 +50,12 @@ public class KDC extends Entity {
                 System.out.println("Alice esta verificando o nonce");
                 if (alice.verifyNonce(nonceMessage, bobNonce, aliceSessionKey)) {
                     System.out.println("Nonce correto.");
+                    byte[] msgSessionDecrypted = sessionMessage.decrypt(aliceSessionKey);
+                    byte[] msgMasterEncrypted = AES.encrypt(msgSessionDecrypted, alice.getMasterKey());
+
                     Message finalMessage = new Message(
                             msg.getSender(),
-                            sessionMessage.getMessage()
+                            msgMasterEncrypted
                     );
                     alice.addMessage(finalMessage);
                 } else {
