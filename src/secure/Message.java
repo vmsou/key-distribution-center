@@ -50,6 +50,11 @@ public class Message extends Entity {
                 ", message=" + new String(message) +
                 '}';
     }
+
+    @Override
+    public String toSave() {
+        return String.valueOf(getId()) + ',' + getName() + ',' + String.valueOf(sender) + ',' + new String(message);
+    }
 }
 
 class ProofMessage extends Message {

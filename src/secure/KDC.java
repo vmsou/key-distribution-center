@@ -48,7 +48,7 @@ public class KDC extends Entity {
                 System.out.println("Bob recebe sua chave de sessão e envia para alice");
 
                 // Alice sends nonce to bob
-                NonceMessage nonceMessage = alice.send(Main.genNounce(), aliceSessionKey);
+                NonceMessage nonceMessage = alice.send(Main.genNonce(), aliceSessionKey);
                 System.out.println("Alice manda nonce para bob");
 
                 // Bob receives and updates nonce number
@@ -137,4 +137,9 @@ public class KDC extends Entity {
     public SessionKey getSessionKey() { return sessionKey; }
 
     public void setSessionKey(SessionKey sessionKey) { this.sessionKey = sessionKey; }
+
+    @Override
+    public String toSave() {
+        return "";
+    }
 }

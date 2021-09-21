@@ -7,7 +7,7 @@ import java.nio.ByteBuffer;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
-public class Entity {
+public abstract class Entity {
     private int id;
     private String name;
 
@@ -15,6 +15,8 @@ public class Entity {
         setId(id);
         setName(name);
     }
+
+    public abstract String toSave();
 
     // Getters and Setters
     public int getId() { return id; }
@@ -27,6 +29,7 @@ public class Entity {
 }
 
 class UserEntity extends Entity {
+    static int count = 0;
     private MasterKey masterKey;
     private Messages messages;
 
@@ -34,6 +37,7 @@ class UserEntity extends Entity {
         super(id, name);
         setMasterKey(masterKey);
         setMessages(new Messages());
+        ++count;
     }
 
     // Methods
@@ -97,13 +101,18 @@ class UserEntity extends Entity {
         return nonce2 == correctNonce;
     }
 
+    public int nonceFunc(int nonce) {
+        return nonce + 1;
+    }
+
+    public String toSave() {
+        return String.valueOf(getId()) + ',' + getName() + ',' + masterKey;
+    }
+
+    // Getters and Setters
     public MasterKey getMasterKey() { return masterKey; }
 
     public void setMasterKey(MasterKey masterKey) { this.masterKey = masterKey; }
-
-    public int nonceFunc(int nounce) {
-        return nounce + 1;
-    }
 
     public Messages getMessages() { return messages; }
 
