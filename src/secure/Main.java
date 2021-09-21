@@ -1,6 +1,5 @@
 package secure;
 
-import java.nio.ByteBuffer;
 import java.util.Random;
 
 public class Main {
