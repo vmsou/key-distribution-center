@@ -18,16 +18,17 @@ public class KDC extends Entity {
     public KDC(Engine engine) {
         super(0, "KDC");
         setEngine(engine);
-        setMasterKeys(loadMasterKeys());
+        loadMasterKeys();
         setSessionKey(new SessionKey(genKey(32)));
     }
 
     // Methods
-    public HashMap<Integer, MasterKey> loadMasterKeys() {
-        HashMap<Integer, MasterKey> keys = new HashMap<>();
+    public void add(int i, MasterKey masterKey) { }
+
+    public void loadMasterKeys() {
+        masterKeys = new HashMap<>();
         for (UserEntity u : engine.global.users.values())
-            keys.put(u.getId(), u.getMasterKey());
-        return keys;
+            add(u.getId(), u.getMasterKey());
     }
 
     public void send(UserEntity bob, UserEntity alice, String message) {
@@ -73,7 +74,7 @@ public class KDC extends Entity {
             } else
                 System.out.println("Prova de identidade falhou");
         } catch (Exception e) {
-            System.out.println("Ocorreu um erro. " + e.getMessage());
+                e.printStackTrace();
         }
     }
 
@@ -81,19 +82,29 @@ public class KDC extends Entity {
         int sender = proofMessage.getSender();
         MasterKey senderKey = getMaster(sender);
 
-        byte[] decryptedReceiver = AES.decrypt(proofMessage.getReceiver(), senderKey);
+        System.out.println("Sender key alright");
+
+        byte[] encryptedReceiver = proofMessage.getReceiver();
+        byte[] decryptedReceiver = AES.decrypt(encryptedReceiver, senderKey);
         int receiver = ByteBuffer.wrap(decryptedReceiver).getInt();
         MasterKey receiverKey = getMaster(receiver);
+
+        System.out.println("Receiver key alright");
 
         byte[] decryptedProof = AES.decrypt(proofMessage.getProof(), senderKey);
         int proof = ByteBuffer.wrap(decryptedProof).getInt();
 
+        System.out.println("Proof converted.");
+
         // Verify proof
         if (proof == sender) {
+            System.out.println("Proof verified.");
             // Update message with session key encryption
             byte[] message = proofMessage.getMessage();
             byte[] decryptedMessage = AES.decrypt(message, senderKey);
             byte[] encryptedMessage = AES.encrypt(decryptedMessage, sessionKey);
+
+            System.out.println("Message recrypted.");
             proofMessage.setMessage(encryptedMessage);
 
             // sessionKey encrypted with sender keys

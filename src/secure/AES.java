@@ -39,6 +39,7 @@ public class AES {
 	}
 
 	public static byte[] decrypt(byte[] text, SecretKey secretKey) throws IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException {
+		System.out.println(secretKey);
 		return decrypt(text, secretKey.toBytes());
 	}
 	public static byte[] decrypt(byte[] text, byte[] secretKey) throws IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException {

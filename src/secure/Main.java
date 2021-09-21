@@ -6,16 +6,15 @@ public class Main {
     public static void main(String[] args) {
 	    Engine engine = new Engine();
 
-        UserEntity user = engine.create("Bob");
-        engine.create("Alice");
-        engine.setUser(user);
+        // UserEntity bob = engine.getUser(0);
+        // UserEntity alice = engine.getUser(1);
 
-        for (UserEntity u : engine.global.users.values())
-            System.out.println(u);
-        // engine.send(2, "TESTE");
+        UserEntity bob = engine.create("Bob");
+        UserEntity alice = engine.create("Alice");
+        engine.setUser(bob);
 
-        engine.close();
 
+        // engine.close();
     }
     public static int genNonce() {
         return new Random().nextInt();

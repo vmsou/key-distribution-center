@@ -1,7 +1,6 @@
 package secure;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
@@ -25,7 +24,9 @@ public class Engine {
 
     public UserEntity create(String name) {
         int id = UserEntity.count;
-        UserEntity newUser = new UserEntity(id, name, new MasterKey(KDC.genKey(32)));
+        MasterKey masterKey = new MasterKey("aaaaaaaaaaaaaaaa".getBytes(StandardCharsets.UTF_8));
+        UserEntity newUser = new UserEntity(id, name, masterKey);
+        kdc.add(id, masterKey);
         global.users.put(id, newUser);
         return newUser;
     }
@@ -34,7 +35,7 @@ public class Engine {
         System.out.println("Lendo o arquivo '" + filename + '\'');
         File file = new File(filename);
         try {
-            if (file.createNewFile()) return null;
+            if (file.createNewFile()) System.out.println(filename + " foi criado.");
             return new Scanner(file);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -66,6 +67,7 @@ public class Engine {
         Scanner sc = fstream(filename);
         UserEntity user = null;
         if (sc != null) {
+            if (!sc.hasNextLine()) return user;
             String[] attr = sc.nextLine().split(",");
             user = new UserEntity(
                     Integer.parseInt(attr[0]),      // id
