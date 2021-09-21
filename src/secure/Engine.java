@@ -15,32 +15,44 @@ public class Engine {
     public Engine() {
         setGlobal(new Global());
         setKdc(new KDC(this));
-        setUser(load("data/data.txt"));
+        setUser(load("data/data.csv"));
     }
 
     // Methods
     public void send(int id, String message) {
-        UserEntity to = global.users.get(id);
-        kdc.send(user, to, message);
+        kdc.send(user, getUser(id), message);
     }
 
-    public void create(String name) {
+    public UserEntity create(String name) {
         int id = UserEntity.count;
-        global.users.put(id, new UserEntity(id, name, new MasterKey(KDC.genKey(32))));
+        UserEntity newUser = new UserEntity(id, name, new MasterKey(KDC.genKey(32)));
+        global.users.put(id, newUser);
+        return newUser;
     }
 
     public static Scanner fstream(String filename) {
         System.out.println("Lendo o arquivo '" + filename + '\'');
+        File file = new File(filename);
         try {
-            File file = new File(filename);
+            if (file.createNewFile()) return null;
             return new Scanner(file);
-        } catch (FileNotFoundException e) {
-            System.out.println("Não foi possível ler o arquivo: '" + filename + '\'');
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
         }
         return null;
     }
 
     public<T extends Entity> void save (EntityContainer<T> data, String filename) {
+        try {
+            FileWriter fw = new FileWriter(filename);
+            fw.write(data.toSave());
+            fw.close();
+        } catch (Exception e) {
+            System.out.println("Não foi possível salvar.");
+        }
+    }
+
+    public<T extends Entity> void save (T data, String filename) {
         try {
             FileWriter fw = new FileWriter(filename);
             fw.write(data.toSave());
@@ -63,6 +75,16 @@ public class Engine {
         }
         return user;
     }
+
+    public void close() {
+        System.out.println("Saving data...");
+        save(user, "data/data.csv");
+        save(global.users, "data/users.csv");
+        // save(global.messages, "data/messages.csv");
+        System.out.println("Done.");
+    }
+
+    public UserEntity getUser(int id) { return global.users.get(id); }
 
     // Getters amd Setters
     public Global getGlobal() { return global; }

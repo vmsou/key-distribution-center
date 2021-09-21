@@ -21,12 +21,12 @@ public class Global {
                 String[] attr = sc.nextLine().split(",");
                 if (attr.length == 3) {
                     id = Integer.parseInt(attr[0]);
+                    UserEntity.count = id;
                     users.put(id, new UserEntity(
                             id,                             // id
                             attr[1],                        // name
                             new MasterKey(attr[2].getBytes(StandardCharsets.UTF_8))
                     ));
-                    ++id;
                 }
             }
         }

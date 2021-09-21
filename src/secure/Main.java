@@ -6,13 +6,15 @@ public class Main {
     public static void main(String[] args) {
 	    Engine engine = new Engine();
 
-        // engine.create("Bob");
-        // engine.create("Alice");
+        UserEntity user = engine.create("Bob");
+        engine.create("Alice");
+        engine.setUser(user);
 
         for (UserEntity u : engine.global.users.values())
             System.out.println(u);
+        // engine.send(2, "TESTE");
 
-        engine.save(engine.global.users, "data/users.csv");
+        engine.close();
 
     }
     public static int genNonce() {
