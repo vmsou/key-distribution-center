@@ -15,16 +15,20 @@ public class Engine {
         setGlobal(new Global());
         setKdc(new KDC(this));
         setUser(load("data/data.csv"));
+        System.out.println();
     }
 
     // Methods
     public void send(int id, String message) {
-        kdc.send(user, getUser(id), message);
+        UserEntity to = getUser(id);
+        Message msg = kdc.send(user, to, message);
+        global.add(msg);
+        to.add(msg);
     }
 
     public UserEntity create(String name) {
         int id = UserEntity.count;
-        MasterKey masterKey = new MasterKey("aaaaaaaaaaaaaaaa".getBytes(StandardCharsets.UTF_8));
+        MasterKey masterKey = new MasterKey(KDC.genKey(32));
         UserEntity newUser = new UserEntity(id, name, masterKey);
         kdc.add(id, masterKey);
         global.users.put(id, newUser);
@@ -82,7 +86,7 @@ public class Engine {
         System.out.println("Saving data...");
         save(user, "data/data.csv");
         save(global.users, "data/users.csv");
-        // save(global.messages, "data/messages.csv");
+        save(global.messages, "data/messages.csv");
         System.out.println("Done.");
     }
 

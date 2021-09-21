@@ -4,6 +4,7 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -31,7 +32,7 @@ public class KDC extends Entity {
             add(u.getId(), u.getMasterKey());
     }
 
-    public void send(UserEntity from, UserEntity to, String message) {
+    public Message send(UserEntity from, UserEntity to, String message) {
         try {
             // Bob sends message to KDC with id, AES(id), AES(receiver), AES(message)
             ProofMessage msg = from.send(to, message);
@@ -63,11 +64,9 @@ public class KDC extends Entity {
                     byte[] msgSessionDecrypted = sessionMessage.decrypt(toSessionKey);
                     byte[] msgMasterEncrypted = AES.encrypt(msgSessionDecrypted, to.getMasterKey());
 
-                    Message finalMessage = new Message(
+                    return new Message(
                             msg.getSender(),
-                            msgMasterEncrypted
-                    );
-                    to.addMessage(finalMessage);
+                            msgMasterEncrypted);
                 } else {
                     System.out.println("Nonce falhou.");
                 }
@@ -76,6 +75,7 @@ public class KDC extends Entity {
         } catch (Exception e) {
                 e.printStackTrace();
         }
+        return null;
     }
 
     public SessionMessage receive(ProofMessage proofMessage) throws IllegalBlockSizeException, NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException {
@@ -123,7 +123,9 @@ public class KDC extends Entity {
     public static byte[] genKey(int len) {
         byte[] newKey = new byte[len];
         new Random().nextBytes(newKey);
-        return newKey;
+        String toReplace = new String(newKey);
+        toReplace = toReplace.replace(',', ' ');
+        return toReplace.getBytes(StandardCharsets.UTF_8);
     }
 
     public void resetSessionKey() {sessionKey.setKey(genKey(32)); }

@@ -41,9 +41,10 @@ class UserEntity extends Entity {
     }
 
     // Methods
-    public void addMessage(Message m) { messages.put(m.getId(), m); }
+    public void add(Message m) { messages.put(m.getId(), m); }
 
     public void showMessages() {
+        System.out.println("Mensagens de " + getName());
         for (Message m : messages.values())
             System.out.println(m.getSender() + ": " + m.decryptedText(masterKey));
     }
