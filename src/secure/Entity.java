@@ -40,10 +40,10 @@ class UserEntity extends Entity {
     public ProofMessage send(UserEntity receiver, String message) throws IllegalBlockSizeException, NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException {
         // KDC Verifies identity
         return new ProofMessage(
-                getId(),
-                AES.encrypt(getId(), masterKey),
-                AES.encrypt(receiver.getId(), masterKey),
-                AES.encrypt(message, masterKey));
+                getId(),                                    // sender
+                AES.encrypt(getId(), masterKey),            // proof
+                AES.encrypt(receiver.getId(), masterKey),   // receiver
+                AES.encrypt(message, masterKey));           // message
     }
 
     public Message send(SessionMessage sessionMessage) {

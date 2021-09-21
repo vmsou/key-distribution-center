@@ -7,6 +7,7 @@ import java.nio.ByteBuffer;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.PropertyPermission;
 import java.util.Random;
 
 public class KDC extends Entity {
@@ -29,8 +30,11 @@ public class KDC extends Entity {
         int receiver = ByteBuffer.wrap(decryptedReceiver).getInt();
         MasterKey receiverKey = getMaster(receiver);
 
+        byte[] decryptedProof = AES.decrypt(proofMessage.getProof(), senderKey);
+        int proof = ByteBuffer.wrap(decryptedProof).getInt();
+
         // Verify proof
-        if (proofMessage.getProof() == AES.encrypt(sender, senderKey)) {
+        if (proof == sender) {
             // receives sessionKey encrypted with sender keys
             Message session1 = new Message(
                     getId(),

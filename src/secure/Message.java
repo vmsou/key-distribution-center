@@ -1,5 +1,7 @@
 package secure;
 
+import java.util.Arrays;
+
 public class Message {
     private int sender;
     private byte[] message;
@@ -38,6 +40,14 @@ class ProofMessage extends Message {
     public byte[] getReceiver() { return receiver; }
 
     public void setReceiver(byte[] receiver) { this.receiver = receiver; }
+
+    @Override
+    public String toString() {
+        return "ProofMessage{" +
+                "proof=" + Arrays.toString(proof) +
+                ", receiver=" + Arrays.toString(receiver) +
+                '}';
+    }
 }
 
 class SessionMessage extends Message {

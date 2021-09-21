@@ -1,5 +1,6 @@
 package secure;
 
+import java.nio.ByteBuffer;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
@@ -13,7 +14,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class AES {
 
 	public static byte[] encrypt(int n, SecretKey secretKey) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException {
-		return encrypt(Integer.toString(n), secretKey.toBytes());
+		return encrypt(ByteBuffer.allocate(4).putInt(n).array(), secretKey.toBytes());
 	}
 	public static byte[] encrypt(byte[] text, SecretKey secretKey) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException {
 		return encrypt(text, secretKey.toBytes());
