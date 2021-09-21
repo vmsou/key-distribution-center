@@ -10,17 +10,26 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class KDC extends Entity {
+    private Engine engine;
     private HashMap<Integer, MasterKey> masterKeys; // DON'T EXPOSE
     private SessionKey sessionKey;
 
     // Constructors
-    public KDC() {
+    public KDC(Engine engine) {
         super(0, "KDC");
-        setMasterKeys(new HashMap<>());
+        setEngine(engine);
+        setMasterKeys(loadMasterKeys());
         setSessionKey(new SessionKey(genKey(32)));
     }
 
     // Methods
+    public HashMap<Integer, MasterKey> loadMasterKeys() {
+        HashMap<Integer, MasterKey> keys = new HashMap<>();
+        for (UserEntity u : engine.global.users)
+            keys.put(u.getId(), u.getMasterKey());
+        return keys;
+    }
+
     public void send(UserEntity bob, UserEntity alice, String message) {
         try {
             // Bob sends message to KDC with id, AES(id), AES(receiver), AES(message)
@@ -117,6 +126,10 @@ public class KDC extends Entity {
     public void resetSessionKey() {sessionKey.setKey(genKey(32)); }
 
     // Getters and Setters
+    public Engine getEngine() { return engine; }
+
+    public void setEngine(Engine engine) { this.engine = engine; }
+
     public HashMap<Integer, MasterKey> getMasterKeys() { return masterKeys; }
 
     public void setMasterKeys(HashMap<Integer, MasterKey> masterKeys) { this.masterKeys = masterKeys; }

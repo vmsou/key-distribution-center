@@ -113,6 +113,7 @@ class UserEntity extends Entity {
     public String toString() {
         return "UserEntity{" +
                 "id=" + getId() +
+                ", name=" + getName() +
                 ", masterKey=" + masterKey +
                 ", messages=" + messages +
                 '}';

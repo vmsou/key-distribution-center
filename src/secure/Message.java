@@ -1,6 +1,5 @@
 package secure;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Message {
