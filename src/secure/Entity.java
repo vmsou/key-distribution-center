@@ -8,14 +8,12 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
 public class Entity {
-    static private int count = 0;
     private int id;
     private String name;
 
-    public Entity(String name) {
-        setId(count);
+    public Entity(int id, String name) {
+        setId(id);
         setName(name);
-        ++count;
     }
 
     // Getters and Setters
@@ -32,8 +30,8 @@ class UserEntity extends Entity {
     private MasterKey masterKey;
     private Messages messages;
 
-    public UserEntity(String name, MasterKey masterKey) {
-        super(name);
+    public UserEntity(int id, String name, MasterKey masterKey) {
+        super(id, name);
         setMasterKey(masterKey);
         setMessages(new Messages());
     }
@@ -110,4 +108,13 @@ class UserEntity extends Entity {
     public Messages getMessages() { return messages; }
 
     public void setMessages(Messages messages) { this.messages = messages; }
+
+    @Override
+    public String toString() {
+        return "UserEntity{" +
+                "id=" + getId() +
+                ", masterKey=" + masterKey +
+                ", messages=" + messages +
+                '}';
+    }
 }

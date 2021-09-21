@@ -111,14 +111,3 @@ class NonceMessage extends Message {
     }
 }
 
-class Messages extends ArrayList<Message> {
-    private ArrayList<Message> messages;
-
-    public Messages() {
-        setMessages(new ArrayList<>());
-    }
-
-    public ArrayList<Message> getMessages() { return messages; }
-
-    public void setMessages(ArrayList<Message> messages) { this.messages = messages; }
-}

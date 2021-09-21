@@ -15,7 +15,7 @@ public class KDC extends Entity {
 
     // Constructors
     public KDC() {
-        super("KDC");
+        super(0, "KDC");
         setMasterKeys(new HashMap<>());
         setSessionKey(new SessionKey(genKey(32)));
     }
@@ -107,14 +107,8 @@ public class KDC extends Entity {
 
     public MasterKey getMaster(int id) { return masterKeys.get(id); }
 
-    public UserEntity createUser(String name) {
-        MasterKey masterKey = new MasterKey(genKey(32));
-        UserEntity entity = new UserEntity(name, masterKey);
-        masterKeys.put(entity.getId(), masterKey);
-        return entity;
-    }
 
-    public byte[] genKey(int len) {
+    public static byte[] genKey(int len) {
         byte[] newKey = new byte[len];
         new Random().nextBytes(newKey);
         return newKey;
