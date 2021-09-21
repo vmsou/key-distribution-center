@@ -1,5 +1,6 @@
 package secure;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Message {
@@ -17,6 +18,14 @@ public class Message {
     public byte[] getMessage() { return message; }
 
     public void setMessage(byte[] message) { this.message = message; }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "sender=" + sender +
+                ", message=" + new String(message) +
+                '}';
+    }
 }
 
 class ProofMessage extends Message {
@@ -78,4 +87,16 @@ class NonceMessage extends Message {
     public NonceMessage(int sender, byte[] message) {
         super(sender, message);
     }
+}
+
+class Messages extends ArrayList<Message> {
+    private ArrayList<Message> messages;
+
+    public Messages() {
+        setMessages(new ArrayList<>());
+    }
+
+    public ArrayList<Message> getMessages() { return messages; }
+
+    public void setMessages(ArrayList<Message> messages) { this.messages = messages; }
 }

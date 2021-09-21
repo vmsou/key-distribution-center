@@ -8,7 +8,8 @@ public class Main {
 	    UserEntity alice = kdc.createUser("alice");
         UserEntity bob = kdc.createUser("bob");
 
-        kdc.send(bob, alice, "Teste 123");
+        kdc.send(bob, alice, "Teste");
+        alice.showMessages();
     }
     public static int genNounce() {
         return new Random().nextInt();

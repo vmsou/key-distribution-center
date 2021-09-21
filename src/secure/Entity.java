@@ -30,19 +30,29 @@ public class Entity {
 
 class UserEntity extends Entity {
     private MasterKey masterKey;
+    private Messages messages;
 
     public UserEntity(String name, MasterKey masterKey) {
         super(name);
         setMasterKey(masterKey);
+        setMessages(new Messages());
+    }
+
+    // Methods
+    public void addMessage(Message m) { messages.add(m); }
+
+    public void showMessages() {
+        for (Message m : messages)
+            System.out.println(m);
     }
 
     public ProofMessage send(UserEntity receiver, String message) throws IllegalBlockSizeException, NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException {
-        // KDC Verifies identity
         return new ProofMessage(
                 getId(),                                    // sender
                 AES.encrypt(getId(), masterKey),            // proof
                 AES.encrypt(receiver.getId(), masterKey),   // receiver
                 AES.encrypt(message, masterKey));           // message
+
     }
 
     public Message send(SessionMessage sessionMessage) {
@@ -96,4 +106,8 @@ class UserEntity extends Entity {
     public int nonceFunc(int nounce) {
         return nounce + 1;
     }
+
+    public Messages getMessages() { return messages; }
+
+    public void setMessages(Messages messages) { this.messages = messages; }
 }

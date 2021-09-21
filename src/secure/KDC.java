@@ -24,7 +24,7 @@ public class KDC extends Entity {
     public void send(UserEntity bob, UserEntity alice, String message) {
         try {
             // Bob sends message to KDC with id, AES(id), AES(receiver), AES(message)
-            ProofMessage msg = bob.send(alice, "Teste 123");
+            ProofMessage msg = bob.send(alice, message);
             System.out.println("Bob enviou mensagem para KDC");
 
             // KDC sends to Bob his session key and alice's session key
@@ -50,7 +50,11 @@ public class KDC extends Entity {
                 System.out.println("Alice esta verificando o nonce");
                 if (alice.verifyNonce(nonceMessage, bobNonce, aliceSessionKey)) {
                     System.out.println("Nonce correto.");
-                    System.out.println(new String(AES.decrypt(sessionMessage.getMessage(), aliceSessionKey)));
+                    Message finalMessage = new Message(
+                            msg.getSender(),
+                            sessionMessage.getMessage()
+                    );
+                    alice.addMessage(finalMessage);
                 } else {
                     System.out.println("Nonce falhou.");
                 }
