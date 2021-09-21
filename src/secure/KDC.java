@@ -23,7 +23,7 @@ public class KDC extends Entity {
     }
 
     // Methods
-    public void add(int i, MasterKey masterKey) { }
+    public void add(int i, MasterKey masterKey) { masterKeys.put(i, masterKey); }
 
     public void loadMasterKeys() {
         masterKeys = new HashMap<>();
@@ -31,43 +31,43 @@ public class KDC extends Entity {
             add(u.getId(), u.getMasterKey());
     }
 
-    public void send(UserEntity bob, UserEntity alice, String message) {
+    public void send(UserEntity from, UserEntity to, String message) {
         try {
             // Bob sends message to KDC with id, AES(id), AES(receiver), AES(message)
-            ProofMessage msg = bob.send(alice, message);
-            System.out.println("Bob enviou mensagem para KDC");
+            ProofMessage msg = from.send(to, message);
+            if (Main.DEBUG) System.out.println(from.getName() + " enviou mensagem para KDC");
 
             // KDC sends to Bob his session key and alice's session key
             SessionMessage sessionMessage = receive(msg);   // SessionKey refreshed
-            System.out.println("KDC enviou as chaves de sessões para Bob");
+            if (Main.DEBUG) System.out.println("KDC enviou as chaves de sessões para " +  from.getName());
 
             if (sessionMessage != null) {   // Proof was correct
-                System.out.println("Bob comprovou que tinha a chave mestre");
+                if (Main.DEBUG) System.out.println(from.getName() + " comprovou que tinha a chave mestre");
                 // Bob receive his sessionKey and sends alice's sessionKey
-                SessionKey bobSessionKey = bob.receive(sessionMessage);
-                SessionKey aliceSessionKey = alice.receive(sessionMessage);
-                System.out.println("Bob recebe sua chave de sessão e envia para alice");
+                SessionKey fromSessionKey = from.receive(sessionMessage);
+                SessionKey toSessionKey = to.receive(sessionMessage);
+                if (Main.DEBUG) System.out.println(from.getName() + " recebe sua chave de sessão e envia para " + to.getName());
 
                 // Alice sends nonce to bob
-                NonceMessage nonceMessage = alice.send(Main.genNonce(), aliceSessionKey);
-                System.out.println("Alice manda nonce para bob");
+                NonceMessage nonceMessage = to.send(Main.genNonce(), toSessionKey);
+                if (Main.DEBUG) System.out.println("to.getName() manda nonce para " + from.getName());
 
                 // Bob receives and updates nonce number
-                NonceMessage bobNonce = bob.receive(nonceMessage, bobSessionKey);
-                System.out.println("Bob atualiza o nonce");
+                NonceMessage fromNonce = from.receive(nonceMessage, fromSessionKey);
+                if (Main.DEBUG) System.out.println(from.getName() + " atualiza o nonce");
 
                 // Alice updates her nonce and compares with bob nonce
-                System.out.println("Alice esta verificando o nonce");
-                if (alice.verifyNonce(nonceMessage, bobNonce, aliceSessionKey)) {
-                    System.out.println("Nonce correto.");
-                    byte[] msgSessionDecrypted = sessionMessage.decrypt(aliceSessionKey);
-                    byte[] msgMasterEncrypted = AES.encrypt(msgSessionDecrypted, alice.getMasterKey());
+                if (Main.DEBUG) System.out.println(to.getName() + " esta verificando o nonce");
+                if (to.verifyNonce(nonceMessage, fromNonce, toSessionKey)) {
+                    if (Main.DEBUG) System.out.println("Nonce correto.");
+                    byte[] msgSessionDecrypted = sessionMessage.decrypt(toSessionKey);
+                    byte[] msgMasterEncrypted = AES.encrypt(msgSessionDecrypted, to.getMasterKey());
 
                     Message finalMessage = new Message(
                             msg.getSender(),
                             msgMasterEncrypted
                     );
-                    alice.addMessage(finalMessage);
+                    to.addMessage(finalMessage);
                 } else {
                     System.out.println("Nonce falhou.");
                 }
@@ -82,29 +82,21 @@ public class KDC extends Entity {
         int sender = proofMessage.getSender();
         MasterKey senderKey = getMaster(sender);
 
-        System.out.println("Sender key alright");
-
         byte[] encryptedReceiver = proofMessage.getReceiver();
         byte[] decryptedReceiver = AES.decrypt(encryptedReceiver, senderKey);
         int receiver = ByteBuffer.wrap(decryptedReceiver).getInt();
         MasterKey receiverKey = getMaster(receiver);
 
-        System.out.println("Receiver key alright");
-
         byte[] decryptedProof = AES.decrypt(proofMessage.getProof(), senderKey);
         int proof = ByteBuffer.wrap(decryptedProof).getInt();
 
-        System.out.println("Proof converted.");
-
         // Verify proof
         if (proof == sender) {
-            System.out.println("Proof verified.");
             // Update message with session key encryption
             byte[] message = proofMessage.getMessage();
             byte[] decryptedMessage = AES.decrypt(message, senderKey);
             byte[] encryptedMessage = AES.encrypt(decryptedMessage, sessionKey);
 
-            System.out.println("Message recrypted.");
             proofMessage.setMessage(encryptedMessage);
 
             // sessionKey encrypted with sender keys

@@ -3,6 +3,8 @@ package secure;
 import java.util.Random;
 
 public class Main {
+    public static boolean DEBUG = false;
+
     public static void main(String[] args) {
 	    Engine engine = new Engine();
 
@@ -13,6 +15,9 @@ public class Main {
         UserEntity alice = engine.create("Alice");
         engine.setUser(bob);
 
+        engine.send(alice.getId(), "TESTE");
+
+        alice.showMessages();
 
         // engine.close();
     }

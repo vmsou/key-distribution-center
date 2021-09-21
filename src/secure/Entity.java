@@ -65,7 +65,6 @@ class UserEntity extends Entity {
     }
 
     public NonceMessage send(int nonce, SessionKey sessionKey) throws IllegalBlockSizeException, NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException {
-        System.out.println("Nonce gerado: " + nonce);
         return new NonceMessage(
                 getId(),
                 AES.encrypt(nonce, sessionKey));
