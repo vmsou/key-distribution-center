@@ -3,8 +3,11 @@ package secure;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Scanner;
 
 public class Engine {
@@ -17,7 +20,7 @@ public class Engine {
         new File("data").mkdir();
         setGlobal(new Global());
         setKdc(new KDC(this));
-        setUser(load("data/data.csv"));
+        setUser(load("data/data.json"));
         System.out.println();
     }
 
@@ -43,12 +46,12 @@ public class Engine {
         return newUser;
     }
 
-    public static Scanner fstream(String filename) {
+    public static String fstream(String filename) {
         System.out.println("Lendo o arquivo '" + filename + '\'');
         File file = new File(filename);
         try {
             if (file.createNewFile()) System.out.println(filename + " foi criado.");
-            return new Scanner(file);
+            return Files.readString(Path.of(filename), StandardCharsets.UTF_8);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -77,18 +80,14 @@ public class Engine {
     }
 
     public UserEntity load(String filename) {
-        Scanner sc = fstream(filename);
-        UserEntity user = null;
-        if (sc != null) {
-            if (!sc.hasNextLine()) return user;
-            String[] attr = sc.nextLine().split(",");
-            user = new UserEntity(
-                    Integer.parseInt(attr[0]),      // id
-                    attr[1],                        // name
-                    new MasterKey(attr[2].getBytes(StandardCharsets.UTF_8))
-            );
-        }
-        return user;
+        String file = fstream(filename);
+        if (file == null) return null;
+        JSONObject obj = new JSONObject(file);
+        return new UserEntity(
+                obj.getInt("id"),
+                obj.getString("name"),
+                new MasterKey(obj.getString("masterKey").getBytes(StandardCharsets.UTF_8))
+        );
     }
 
     public void close() {

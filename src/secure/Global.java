@@ -1,5 +1,7 @@
 package secure;
 
+import java.io.File;
+import java.io.FileReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
@@ -21,22 +23,8 @@ public class Global {
     public Users getUsersData(String filename) {
         int id = 1;
         Users users = new Users();
-        Scanner sc = Engine.fstream(filename);
+        String sc = Engine.fstream(filename);
 
-        if (sc != null) {
-            while (sc.hasNextLine()) {
-                String[] attr = sc.nextLine().split(",");
-                if (attr.length == 3) {
-                    id = Integer.parseInt(attr[0]);
-                    UserEntity.count = id;
-                    users.put(id, new UserEntity(
-                            id,                             // id
-                            attr[1],                        // name
-                            new MasterKey(attr[2].getBytes(StandardCharsets.UTF_8))
-                    ));
-                }
-            }
-        }
         UserEntity.count = id;
         return users;
     }
