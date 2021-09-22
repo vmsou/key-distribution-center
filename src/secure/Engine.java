@@ -1,5 +1,7 @@
 package secure;
 
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.nio.charset.StandardCharsets;
@@ -65,8 +67,9 @@ public class Engine {
 
     public<T extends Entity> void save (T data, String filename) {
         try {
+            JSONObject obj = data.toJSON();
             FileWriter fw = new FileWriter(filename);
-            fw.write(data.toSave());
+            fw.write(obj.toString(1));
             fw.close();
         } catch (Exception e) {
             System.out.println("Não foi possível salvar.");

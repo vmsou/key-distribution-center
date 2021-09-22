@@ -1,5 +1,7 @@
 package secure;
 
+import org.json.JSONObject;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
@@ -22,6 +24,9 @@ public abstract class Entity {
     }
 
     public abstract String toSave();
+    public JSONObject toJSON() {
+        return new JSONObject();
+    }
 
     // Getters and Setters
     public int getId() { return id; }
@@ -131,6 +136,14 @@ class UserEntity extends Entity {
 
     public String toSave() {
         return getId() + "," + getName() + "," + masterKey;
+    }
+
+    public JSONObject toJSON() {
+        JSONObject obj = new JSONObject();
+        obj.put("id", getId());
+        obj.put("name", getName());
+        obj.put("masterKey", masterKey.toString());
+        return obj;
     }
 
 }
