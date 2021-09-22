@@ -59,12 +59,17 @@ public class Message extends Entity {
 
     @Override
     public String toSave() {
-        return getId() + "," + getName() + "," + sender + "," + this;
+        return toJSON().toString(1);
     }
 
     @Override
     public JSONObject toJSON() {
-        return new JSONObject();
+        JSONObject obj =  new JSONObject();
+        obj.put("id", getId());
+        obj.put("name", getName());
+        obj.put("sender", getSender());
+        obj.put("message", toString());
+        return obj;
     }
 }
 

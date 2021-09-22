@@ -45,13 +45,11 @@ public class Engine {
     }
 
     public static String fstream(String filename) {
-        System.out.println("Lendo o arquivo '" + filename + '\'');
         try {
             return Files.readString(Path.of(filename), StandardCharsets.UTF_8);
         } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+            return null;
         }
-        return null;
     }
 
     public<T extends Entity> void save (EntityContainer<T> data, String filename) {
