@@ -19,27 +19,36 @@ public class Global {
     public void add(Message m) { messages.put(m.getId(), m); }
 
     public Users getUsersData(String filename) {
-        int id = 1;
-        Users users = new Users();
-        String sc = Engine.fstream(filename);
+        Users usrs = new Users();
+        int id = UserEntity.count;
+        String file = Engine.fstream(filename);
+        if (file == null) return usrs;
+        JSONArray arr = new JSONArray(file);
+        if (arr.isEmpty()) return usrs;
+
+        for (int i = 0; i < arr.length(); ++i) {
+            JSONObject obj = arr.getJSONObject(i);
+            id = obj.getInt("id");
+            usrs.put(obj.getInt("id"), new UserEntity(obj));
+            ++id;
+        }
 
         UserEntity.count = id;
         return users;
     }
 
     public Messages getMessagesData(String filename) {
-        Messages messages = new Messages();
-
+        Messages msgs = new Messages();
         String file = Engine.fstream(filename);
-        if (file == null) return null;
+        if (file == null) return msgs;
         JSONArray arr = new JSONArray(file);
-        if (arr.isEmpty()) return messages;
+        if (arr.isEmpty()) return msgs;
 
         for (int i = 0; i < arr.length(); ++i) {
             JSONObject obj = arr.getJSONObject(i);
-            messages.put(obj.getInt("id"), new Message(obj));
+            msgs.put(obj.getInt("id"), new Message(obj));
         }
-        return messages;
+        return msgs;
 
     }
 

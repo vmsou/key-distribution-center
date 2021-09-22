@@ -8,8 +8,10 @@ public class Main {
     public static void main(String[] args) {
 	    Engine engine = new Engine();
 
-        for (var msg : engine.global.messages.values())
-            System.out.println(msg.toJSON().toString(1));
+	    engine.create("Bob");
+	    engine.create("Alice");
+
+        engine.close();
 
     }
     public static int genNonce() {

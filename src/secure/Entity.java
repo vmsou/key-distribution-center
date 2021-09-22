@@ -6,6 +6,7 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
@@ -40,6 +41,11 @@ class UserEntity extends Entity {
     static int count = 1;
     private MasterKey masterKey;
     private Messages messages;
+
+    public UserEntity(JSONObject obj) {
+        super(obj.getInt("id"), obj.getString("name"));
+        setMasterKey(new MasterKey(obj.getString("message").getBytes(StandardCharsets.UTF_8)));
+    }
 
     public UserEntity(int id, String name, MasterKey masterKey) {
         super(id, name);
