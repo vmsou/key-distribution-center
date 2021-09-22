@@ -19,7 +19,7 @@ public class Global {
     public void add(Message m) { messages.put(m.getId(), m); }
 
     public Users getUsersData(String filename) {
-        int id = 0;
+        int id = 1;
         Users users = new Users();
         Scanner sc = Engine.fstream(filename);
 

@@ -57,7 +57,7 @@ public class Message extends Entity {
 
     @Override
     public String toSave() {
-        return String.valueOf(getId()) + "," + getName() + "," + sender + "," + this;
+        return getId() + "," + getName() + "," + sender + "," + this;
     }
 }
 
@@ -106,7 +106,7 @@ class SessionMessage extends Message {
 
     public void setProofMessage(ProofMessage proofMessage) { this.proofMessage = proofMessage; }
 
-    public String getReceiver() { return new String(proofMessage.getReceiver()); }
+    public String getReceiver() { return String.valueOf(getProofMessage().getSender()); }
 
     public Message getSession1() { return session1; }
 

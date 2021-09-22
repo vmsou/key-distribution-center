@@ -6,21 +6,14 @@ public class Main {
     public static boolean DEBUG = false;
 
     public static void main(String[] args) {
-	    Engine engine = new Engine();
+	    // Engine engine = new Engine();
 
-        UserEntity bob = engine.create("bob");
-        UserEntity alice = engine.create("alice");
-        engine.setUser(bob);
-
-        engine.send(alice.getId(), "MENSAGEM");
-
-        alice.showMessages();
-        System.out.println();
-
-        engine.close();
+        for (int i = 0; i < 5; ++i)
+            System.out.println(new String(KDC.genKey(16)));
 
     }
     public static int genNonce() {
         return new Random().nextInt();
     }
+
 }

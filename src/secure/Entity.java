@@ -7,6 +7,7 @@ import java.nio.ByteBuffer;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
+
 public abstract class Entity {
     private int id;
     private String name;
@@ -33,7 +34,7 @@ public abstract class Entity {
 }
 
 class UserEntity extends Entity {
-    static int count = 0;
+    static int count = 1;
     private MasterKey masterKey;
     private Messages messages;
 
@@ -109,10 +110,6 @@ class UserEntity extends Entity {
         return nonce + 1;
     }
 
-    public String toSave() {
-        return String.valueOf(getId()) + ',' + getName() + ',' + masterKey;
-    }
-
     // Getters and Setters
     public MasterKey getMasterKey() { return masterKey; }
 
@@ -131,4 +128,9 @@ class UserEntity extends Entity {
                 ", messages=" + messages +
                 '}';
     }
+
+    public String toSave() {
+        return getId() + "," + getName() + "," + masterKey;
+    }
+
 }

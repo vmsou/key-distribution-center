@@ -12,6 +12,7 @@ public class Engine {
 
     // Constructors
     public Engine() {
+        new File("data").mkdir();
         setGlobal(new Global());
         setKdc(new KDC(this));
         setUser(load("data/data.csv"));
