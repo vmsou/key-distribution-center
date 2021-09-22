@@ -2,10 +2,18 @@ package secure;
 
 import org.json.JSONObject;
 
+import java.nio.charset.StandardCharsets;
+
 public class Message extends Entity {
     static int count;
     private int sender;
     private byte[] message;
+
+    public Message(JSONObject obj) {
+        super(obj.getInt("id"), obj.getString("name"));
+        setSender(obj.getInt("sender"));
+        setMessage(obj.getString("message").getBytes(StandardCharsets.UTF_8));
+    }
 
     public Message(int sender, byte[] message) {
         super(count);

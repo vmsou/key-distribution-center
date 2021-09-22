@@ -1,15 +1,17 @@
 package secure;
 
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 public class Global {
     Users users;
     Messages messages;
 
     // Constructors
     public Global() {
-        users = getUsersData("data/users.csv");
-        // messages = getMessagesData("data/messages.csv");
-        messages = new Messages();
+        users = getUsersData("data/users.json");
+        messages = getMessagesData("data/messages.json");
     }
 
     // Methods
@@ -23,6 +25,22 @@ public class Global {
 
         UserEntity.count = id;
         return users;
+    }
+
+    public Messages getMessagesData(String filename) {
+        Messages messages = new Messages();
+
+        String file = Engine.fstream(filename);
+        if (file == null) return null;
+        JSONArray arr = new JSONArray(file);
+        if (arr.isEmpty()) return messages;
+
+        for (int i = 0; i < arr.length(); ++i) {
+            JSONObject obj = arr.getJSONObject(i);
+            messages.put(obj.getInt("id"), new Message(obj));
+        }
+        return messages;
+
     }
 
     public void showUsers() {
