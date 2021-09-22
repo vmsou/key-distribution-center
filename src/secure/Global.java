@@ -34,7 +34,7 @@ public class Global {
         }
 
         UserEntity.count = id;
-        return users;
+        return usrs;
     }
 
     public Messages getMessagesData(String filename) {

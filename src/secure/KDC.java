@@ -126,13 +126,13 @@ public class KDC extends Entity {
 
     public MasterKey getMaster(int id) { return masterKeys.get(id); }
 
-    public static byte[] genKey(int len) {
+    public static byte[] genKey1(int len) {
         byte[] newKey = new byte[len];
         new Random().nextBytes(newKey);
         return newKey;
     }
 
-    public static byte[] genKey1(int len) {
+    public static byte[] genKey(int len) {
         String str = UUID.randomUUID().toString().substring(0, len);
         return str.getBytes(StandardCharsets.UTF_8);
 

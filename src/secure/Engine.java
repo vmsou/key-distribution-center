@@ -31,6 +31,7 @@ public class Engine {
             to.add(msg);
         } catch (Exception e){
             System.out.println("Não foi possível enviar a mensagem.");
+            e.printStackTrace();
         }
 
     }

@@ -44,7 +44,8 @@ class UserEntity extends Entity {
 
     public UserEntity(JSONObject obj) {
         super(obj.getInt("id"), obj.getString("name"));
-        setMasterKey(new MasterKey(obj.getString("message").getBytes(StandardCharsets.UTF_8)));
+        setMasterKey(new MasterKey(obj.getString("masterKey").getBytes(StandardCharsets.UTF_8)));
+        setMessages(new Messages());
     }
 
     public UserEntity(int id, String name, MasterKey masterKey) {

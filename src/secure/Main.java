@@ -8,8 +8,9 @@ public class Main {
     public static void main(String[] args) {
 	    Engine engine = new Engine();
 
-	    engine.create("Bob");
-	    engine.create("Alice");
+	    UserEntity alice = engine.getUser(2);
+
+	    engine.send(alice.getId(), "MENSAGEM");
 
         engine.close();
 
