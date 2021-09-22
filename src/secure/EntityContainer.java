@@ -1,13 +1,18 @@
 package secure;
 
+import org.json.JSONArray;
+
 import java.util.HashMap;
 
 public abstract class EntityContainer<T extends Entity> extends HashMap<Integer, T> {
-    public String toSave() {
-        StringBuilder str = new StringBuilder();
+    public String toSave() { return toJSON().toString(1); }
+
+    public JSONArray toJSON() {
+        JSONArray arr = new JSONArray();
         for (T t : values())
-            str.append(t.toSave()).append("\n");
-        return str.toString();
+            arr.put(t.toJSON());
+
+        return arr;
     }
 }
 

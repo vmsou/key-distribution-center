@@ -1,9 +1,5 @@
 package secure;
 
-import java.io.File;
-import java.io.FileReader;
-import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
 
 public class Global {
     Users users;

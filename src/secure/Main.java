@@ -8,7 +8,10 @@ public class Main {
     public static void main(String[] args) {
 	    Engine engine = new Engine();
 
-        System.out.println(engine.user);
+        engine.create("0");
+        engine.create("1");
+
+        engine.save(engine.global.users, "data/users.json");
 
     }
     public static int genNonce() {

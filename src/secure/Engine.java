@@ -3,12 +3,10 @@ package secure;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Scanner;
 
 public class Engine {
     Global global;
@@ -48,9 +46,7 @@ public class Engine {
 
     public static String fstream(String filename) {
         System.out.println("Lendo o arquivo '" + filename + '\'');
-        File file = new File(filename);
         try {
-            if (file.createNewFile()) System.out.println(filename + " foi criado.");
             return Files.readString(Path.of(filename), StandardCharsets.UTF_8);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -70,9 +66,8 @@ public class Engine {
 
     public<T extends Entity> void save (T data, String filename) {
         try {
-            JSONObject obj = data.toJSON();
             FileWriter fw = new FileWriter(filename);
-            fw.write(obj.toString(1));
+            fw.write(data.toSave());
             fw.close();
         } catch (Exception e) {
             System.out.println("Não foi possível salvar.");
@@ -83,6 +78,7 @@ public class Engine {
         String file = fstream(filename);
         if (file == null) return null;
         JSONObject obj = new JSONObject(file);
+        if (obj.isEmpty()) return null;
         return new UserEntity(
                 obj.getInt("id"),
                 obj.getString("name"),
@@ -92,9 +88,9 @@ public class Engine {
 
     public void close() {
         System.out.println("Saving data...");
-        save(user, "data/data.csv");
-        save(global.users, "data/users.csv");
-        save(global.messages, "data/messages.csv");
+        save(user, "data/data.json");
+        save(global.users, "data/users.json");
+        save(global.messages, "data/messages.json");
         System.out.println("Done.");
     }
 

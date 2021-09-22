@@ -24,9 +24,7 @@ public abstract class Entity {
     }
 
     public abstract String toSave();
-    public JSONObject toJSON() {
-        return new JSONObject();
-    }
+    public abstract JSONObject toJSON();
 
     // Getters and Setters
     public int getId() { return id; }
@@ -134,9 +132,7 @@ class UserEntity extends Entity {
                 '}';
     }
 
-    public String toSave() {
-        return getId() + "," + getName() + "," + masterKey;
-    }
+    public String toSave() { return toJSON().toString(1); }
 
     public JSONObject toJSON() {
         JSONObject obj = new JSONObject();

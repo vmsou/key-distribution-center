@@ -1,5 +1,7 @@
 package secure;
 
+import org.json.JSONObject;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
@@ -153,6 +155,8 @@ public class KDC extends Entity {
 
     @Override
     public String toSave() {
-        return "";
+        return toJSON().toString(1);
     }
+
+    public JSONObject toJSON() { return new JSONObject(); }
 }

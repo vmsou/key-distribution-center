@@ -1,5 +1,7 @@
 package secure;
 
+import org.json.JSONObject;
+
 public class Message extends Entity {
     static int count;
     private int sender;
@@ -58,6 +60,11 @@ public class Message extends Entity {
     @Override
     public String toSave() {
         return getId() + "," + getName() + "," + sender + "," + this;
+    }
+
+    @Override
+    public JSONObject toJSON() {
+        return new JSONObject();
     }
 }
 
