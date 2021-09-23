@@ -80,9 +80,10 @@ class UserEntity extends Entity {
                 sessionMessage.getSession2().toBytes());
     }
 
-    public NonceMessage send(int nonce, SessionKey sessionKey) throws IllegalBlockSizeException, NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException {
+    public NonceMessage send(int nonce, int receiver, SessionKey sessionKey) throws IllegalBlockSizeException, NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException {
         return new NonceMessage(
                 getId(),
+                AES.encrypt(receiver, sessionKey),
                 AES.encrypt(nonce, sessionKey));
     }
 
@@ -100,6 +101,7 @@ class UserEntity extends Entity {
         int newNonce = nonceFunc(nonce);
         return new NonceMessage(
                 getId(),
+                AES.encrypt(nonceMessage.getSender(), sessionKey),
                 AES.encrypt(newNonce, sessionKey));
     }
 

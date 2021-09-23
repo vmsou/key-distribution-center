@@ -4,19 +4,20 @@ package secure;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class Global {
+public class Client {
     Users users;
     Messages messages;
 
     // Constructors
-    public Global() {
+    public Client() {
         users = getUsersData("data/users.json");
         messages = getMessagesData("data/messages.json");
     }
 
     // Methods
     public void add(UserEntity u) { users.put(u.getId(), u); }
-    public void add(Message m) { messages.put(m.getId(), m); }
+
+    public void send(Message m) { messages.put(m.getId(), m); }
 
     public Users getUsersData(String filename) {
         Users usrs = new Users();

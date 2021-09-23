@@ -9,14 +9,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class Engine {
-    Global global;
+    Client client;
     KDC kdc;
     UserEntity user;
 
     // Constructors
     public Engine() {
         new File("data").mkdir();
-        setGlobal(new Global());
+        setClient(new Client());
         setKdc(new KDC(this));
         setUser(load("data/data.json"));
         System.out.println();
@@ -27,7 +27,7 @@ public class Engine {
         try {
             UserEntity to = getUser(id);
             Message msg = kdc.send(user, to, message);
-            global.add(msg);
+            client.send(msg);
             to.add(msg);
         } catch (Exception e){
             System.out.println("Não foi possível enviar a mensagem.");
@@ -41,7 +41,7 @@ public class Engine {
         MasterKey masterKey = new MasterKey(KDC.genKey(32));
         UserEntity newUser = new UserEntity(id, name, masterKey);
         kdc.add(id, masterKey);
-        global.users.put(id, newUser);
+        client.users.put(id, newUser);
         return newUser;
     }
 
@@ -88,17 +88,17 @@ public class Engine {
     public void close() {
         System.out.println("Saving data...");
         save(user, "data/data.json");
-        save(global.users, "data/users.json");
-        save(global.messages, "data/messages.json");
+        save(client.users, "data/users.json");
+        save(client.messages, "data/messages.json");
         System.out.println("Done.");
     }
 
-    public UserEntity getUser(int id) { return global.users.get(id); }
+    public UserEntity getUser(int id) { return client.users.get(id); }
 
     // Getters amd Setters
-    public Global getGlobal() { return global; }
+    public Client getClient() { return client; }
 
-    public void setGlobal(Global global) { this.global = global; }
+    public void setClient(Client client) { this.client = client; }
 
     public KDC getKdc() { return kdc; }
 

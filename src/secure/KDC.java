@@ -31,7 +31,7 @@ public class KDC extends Entity {
 
     public void loadMasterKeys() {
         masterKeys = new HashMap<>();
-        for (UserEntity u : engine.global.users.values())
+        for (UserEntity u : engine.client.users.values())
             add(u.getId(), u.getMasterKey());
     }
 
@@ -39,32 +39,32 @@ public class KDC extends Entity {
         // Bob sends message to KDC with id, AES(id), AES(receiver), AES(message)
         ProofMessage msg = from.send(to, message);
         if (Main.DEBUG) System.out.println(from.getName() + " enviou mensagem para KDC");
-        engine.global.add(msg);
+        engine.client.send(msg);
 
         // KDC sends to Bob his session key and alice's session key
         SessionsMessage sessionsMessage = receive(msg);   // SessionKey refreshed
         if (Main.DEBUG) System.out.println("KDC enviou as chaves de sessões para " +  from.getName());
-        engine.global.add(sessionsMessage);
+        engine.client.send(sessionsMessage);
 
         if (sessionsMessage != null) {   // Proof was correct
             if (Main.DEBUG) System.out.println(from.getName() + " comprovou que tinha a chave mestre");
             // Bob receive his sessionKey and sends alice's sessionKey
             SessionKey fromSessionKey = from.receive(sessionsMessage);
             SessionMessage aliceSession = new SessionMessage(from.getId(), msg.getReceiver(), sessionsMessage.getSession2().toBytes());
-            engine.global.add(aliceSession);
+            engine.client.send(aliceSession);
             SessionKey toSessionKey = to.receive(aliceSession);
 
             if (Main.DEBUG) System.out.println(from.getName() + " recebe sua chave de sessão e envia para " + to.getName());
 
             // Alice sends nonce to bob
-            NonceMessage nonceMessage = to.send(Main.genNonce(), toSessionKey);
-            if (Main.DEBUG) System.out.println("to.getName() manda nonce para " + from.getName());
-            engine.global.add(nonceMessage);
+            NonceMessage nonceMessage = to.send(Main.genNonce(), from.getId(), toSessionKey);
+            if (Main.DEBUG) System.out.println(to.getName() + " manda nonce para " + from.getName());
+            engine.client.send(nonceMessage);
 
             // Bob receives and updates nonce number
             NonceMessage fromNonce = from.receive(nonceMessage, fromSessionKey);
             if (Main.DEBUG) System.out.println(from.getName() + " atualiza o nonce");
-            engine.global.add(fromNonce);
+            engine.client.send(fromNonce);
 
             // Alice updates her nonce and compares with bob nonce
             if (Main.DEBUG) System.out.println(to.getName() + " esta verificando o nonce");

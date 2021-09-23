@@ -208,10 +208,27 @@ class SessionsMessage extends Message {
     }
 }
 
-
 class NonceMessage extends Message {
-    public NonceMessage(int sender, byte[] message) {
+    private byte[] receiver;
+
+    public NonceMessage(int sender, byte[] receiver, byte[] message) {
         super("NONCE", sender, message);
+        setReceiver(receiver);
+    }
+
+    public byte[] getReceiver() { return receiver; }
+
+    public void setReceiver(byte[] receiver) { this.receiver = receiver; }
+
+    @Override
+    public JSONObject toJSON() {
+        JSONObject obj =  new JSONObject();
+        obj.put("id", getId());
+        obj.put("name", getName());
+        obj.put("sender", getSender());
+        obj.put("receiver", new String(getReceiver()));
+        obj.put("message", toString());
+        return obj;
     }
 }
 
