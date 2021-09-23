@@ -104,8 +104,6 @@ public class KDC extends Entity {
             byte[] decryptedMessage = AES.decrypt(message, senderKey);
             byte[] encryptedMessage = AES.encrypt(decryptedMessage, sessionKey);
 
-            proofMessage.setMessage(encryptedMessage);
-
             // sessionKey encrypted with sender keys
             SessionKey session1 = new SessionKey(AES.encrypt(sessionKey, senderKey));
 
@@ -114,7 +112,7 @@ public class KDC extends Entity {
 
             resetSessionKey();
 
-            return new SessionsMessage(getId(), proofMessage.getSender(), proofMessage.getMessage(), session1, session2);
+            return new SessionsMessage(getId(), proofMessage.getSender(), encryptedMessage, session1, session2);
         }
         resetSessionKey();
         return null;
