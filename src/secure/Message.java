@@ -134,6 +134,31 @@ class ProofMessage extends Message {
 
 }
 
+class SessionMessage extends Message {
+    private byte[] receiver;
+
+    public SessionMessage(int sender, byte[] receiver, byte[] message) {
+        super("SESSION", sender, message);
+        setReceiver(receiver);
+    }
+
+    @Override
+    public JSONObject toJSON() {
+        JSONObject obj =  new JSONObject();
+        obj.put("id", getId());
+        obj.put("name", getName());
+        obj.put("sender", getSender());
+        obj.put("receiver", new String(getReceiver()));
+        obj.put("message", toString());
+        return obj;
+    }
+
+    // Getters and Setters
+    public byte[] getReceiver() { return receiver; }
+
+    public void setReceiver(byte[] receiver) { this.receiver = receiver; }
+}
+
 class SessionsMessage extends Message {
     private int receiver;
     private SessionKey session1, session2;
@@ -183,11 +208,6 @@ class SessionsMessage extends Message {
     }
 }
 
-class SessionMessage extends Message {
-    public SessionMessage(int sender, byte[] message) {
-        super("SESSION", sender, message);
-    }
-}
 
 class NonceMessage extends Message {
     public NonceMessage(int sender, byte[] message) {

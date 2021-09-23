@@ -50,7 +50,7 @@ public class KDC extends Entity {
             if (Main.DEBUG) System.out.println(from.getName() + " comprovou que tinha a chave mestre");
             // Bob receive his sessionKey and sends alice's sessionKey
             SessionKey fromSessionKey = from.receive(sessionsMessage);
-            SessionMessage aliceSession = new SessionMessage(from.getId(), sessionsMessage.getSession2().toBytes());
+            SessionMessage aliceSession = new SessionMessage(from.getId(), msg.getReceiver(), sessionsMessage.getSession2().toBytes());
             engine.global.add(aliceSession);
             SessionKey toSessionKey = to.receive(aliceSession);
 

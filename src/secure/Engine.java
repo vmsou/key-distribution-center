@@ -59,7 +59,7 @@ public class Engine {
             fw.write(data.toSave());
             fw.close();
         } catch (Exception e) {
-            System.out.println("Não foi possível salvar.");
+            System.out.println("Não foi possível salvar. " + e.getMessage());
         }
     }
 
@@ -69,7 +69,7 @@ public class Engine {
             fw.write(data.toSave());
             fw.close();
         } catch (Exception e) {
-            System.out.println("Não foi possível salvar.");
+            System.out.println("Não foi possível salvar. " + e.getMessage());
         }
     }
 

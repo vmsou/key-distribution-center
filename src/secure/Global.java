@@ -22,7 +22,7 @@ public class Global {
         Users usrs = new Users();
         int id = UserEntity.count;
         String file = Engine.fstream(filename);
-        if (file == null) return usrs;
+        if (file == null || file.isEmpty()) return usrs;
         JSONArray arr = new JSONArray(file);
         if (arr.isEmpty()) return usrs;
 
@@ -41,7 +41,7 @@ public class Global {
         Messages msgs = new Messages();
         int id = Message.count;
         String file = Engine.fstream(filename);
-        if (file == null) return msgs;
+        if (file == null || file.isEmpty()) return msgs;
         JSONArray arr = new JSONArray(file);
         if (arr.isEmpty()) return msgs;
 
