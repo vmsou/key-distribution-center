@@ -133,7 +133,6 @@ class ProofMessage extends Message {
     }
 
 }
-
 class SessionMessage extends Message {
     private int receiver;
     private SessionKey session1, session2;
@@ -150,11 +149,11 @@ class SessionMessage extends Message {
         setSession2(new SessionKey(obj.getString("session2").getBytes(StandardCharsets.UTF_8)));
     }
 
-    public SessionMessage(ProofMessage proofMessage, Message session1, Message session2) {
-        super("SESSION", session1.getSender(), proofMessage.getMessage());
-        setReceiver(proofMessage.getSender());
-        setSession1(new SessionKey(session1.getMessage()));
-        setSession2(new SessionKey(session2.getMessage()));
+    public SessionMessage(int sender, int receiver, byte[] message, SessionKey session1, SessionKey session2) {
+        super("SESSION", sender, message);
+        setReceiver(receiver);
+        setSession1(session1);
+        setSession2(session2);
     }
 
     public void setReceiver(int receiver) { this.receiver = receiver; }
@@ -168,11 +167,6 @@ class SessionMessage extends Message {
     public SessionKey getSession2() { return session2; }
 
     public void setSession2(SessionKey session2) { this.session2 = session2; }
-
-    @Override
-    public String toSave() {
-        return getId() + "," + getName() + "," + getSender() + "," + getReceiver() + ","  + getSession1() + "," + getSession2();
-    }
 
     @Override
     public JSONObject toJSON() {
@@ -209,8 +203,13 @@ class SendMessage extends Message {
     public void setReceiver(int receiver) { this.receiver = receiver; }
 
     @Override
-    public String toSave() {
-        return String.valueOf(
-                getId()) + "," + getName() + "," + getSender() + "," + getReceiver() + "," + this;
+    public JSONObject toJSON() {
+        JSONObject obj =  new JSONObject();
+        obj.put("id", getId());
+        obj.put("name", getName());
+        obj.put("sender", getSender());
+        obj.put("receiver", getReceiver());
+        obj.put("message", toString());
+        return obj;
     }
 }

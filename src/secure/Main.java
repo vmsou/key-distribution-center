@@ -9,7 +9,7 @@ public class Main {
 	    Engine engine = new Engine();
 
 	    UserEntity alice = engine.getUser(2);
-	    engine.send(alice.getId(), "MENSAGEM");
+	    engine.send(alice.getId(), "MESSAGE");
 
         engine.close();
 

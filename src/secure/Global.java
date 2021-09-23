@@ -39,6 +39,7 @@ public class Global {
 
     public Messages getMessagesData(String filename) {
         Messages msgs = new Messages();
+        int id = Message.count;
         String file = Engine.fstream(filename);
         if (file == null) return msgs;
         JSONArray arr = new JSONArray(file);
@@ -46,8 +47,11 @@ public class Global {
 
         for (int i = 0; i < arr.length(); ++i) {
             JSONObject obj = arr.getJSONObject(i);
-            msgs.put(obj.getInt("id"), new Message(obj));
+            id = obj.getInt("id");
+            msgs.put(id, new Message(obj));
+            ++id;
         }
+        Message.count = id;
         return msgs;
 
     }

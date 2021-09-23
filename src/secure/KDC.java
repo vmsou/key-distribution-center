@@ -104,21 +104,14 @@ public class KDC extends Entity {
             proofMessage.setMessage(encryptedMessage);
 
             // sessionKey encrypted with sender keys
-            Message session1 = new Message(
-                    getId(),
-                    AES.encrypt(sessionKey, senderKey)
-            );
-            engine.global.add(session1);
+            SessionKey session1 = new SessionKey(AES.encrypt(sessionKey, senderKey));
 
             // sessionKey encrypted with receiver keys
-            Message session2 = new Message(
-                    getId(),
-                    AES.encrypt(sessionKey, receiverKey)
-            );
-            engine.global.add(session2);
+            SessionKey session2 = new SessionKey(AES.encrypt(sessionKey, receiverKey));
 
             resetSessionKey();
-            return new SessionMessage(proofMessage, session1, session2);
+
+            return new SessionMessage(getId(), proofMessage.getSender(), proofMessage.getMessage(), session1, session2);
         }
         resetSessionKey();
         return null;

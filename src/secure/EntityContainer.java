@@ -17,5 +17,5 @@ public abstract class EntityContainer<T extends Entity> extends HashMap<Integer,
 }
 
 class Users extends EntityContainer<UserEntity> {}
+
 class Messages extends EntityContainer<Message> {}
-class MasterKeys extends HashMap<Integer, SecretKey> {}
