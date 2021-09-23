@@ -9,6 +9,12 @@ public class Message extends Entity {
     private int sender;
     private byte[] message;
 
+    public Message(int id, String name, int sender, byte[] message) {
+        super(id, name);
+        setSender(sender);
+        setMessage(message);
+    }
+
     public Message(JSONObject obj) {
         super(obj.getInt("id"), obj.getString("name"));
         setSender(obj.getInt("sender"));
@@ -85,6 +91,17 @@ class ProofMessage extends Message {
     private byte[] proof;
     private byte[] receiver;
 
+    public ProofMessage(JSONObject obj) {
+        super(
+            obj.getInt("id"),
+            obj.getString("name"),
+            obj.getInt("sender"),
+            obj.getString("message").getBytes(StandardCharsets.UTF_8)
+        );
+        setProof(obj.getString("proof").getBytes(StandardCharsets.UTF_8));
+        setReceiver(obj.getString("receiver").getBytes(StandardCharsets.UTF_8));
+    }
+
     public ProofMessage(int sender, byte[] proof, byte[] receiver, byte[] message) {
         super("PROOF", sender, message);
         setProof(proof);
@@ -104,41 +121,70 @@ class ProofMessage extends Message {
     public void setReceiver(byte[] receiver) { this.receiver = receiver; }
 
     @Override
-    public String toSave() {
-        return getId() + "," + getName() + "," + getSender() + "," + new String(getProof()) +
-                new String(getReceiver()) + "," + this;
+    public JSONObject toJSON() {
+        JSONObject obj =  new JSONObject();
+        obj.put("id", getId());
+        obj.put("name", getName());
+        obj.put("sender", getSender());
+        obj.put("proof", new String(getProof()));
+        obj.put("receiver", new String(getReceiver()));
+        obj.put("message", toString());
+        return obj;
     }
 
 }
 
 class SessionMessage extends Message {
-    private ProofMessage proofMessage;
-    private Message session1, session2;
+    private int receiver;
+    private SessionKey session1, session2;
+
+    public SessionMessage(JSONObject obj) {
+        super(
+            obj.getInt("id"),
+            obj.getString("name"),
+            obj.getInt("sender"),
+            obj.getString("message").getBytes(StandardCharsets.UTF_8)
+        );
+        setReceiver(obj.getInt("receiver"));
+        setSession1(new SessionKey(obj.getString("session1").getBytes(StandardCharsets.UTF_8)));
+        setSession2(new SessionKey(obj.getString("session2").getBytes(StandardCharsets.UTF_8)));
+    }
 
     public SessionMessage(ProofMessage proofMessage, Message session1, Message session2) {
         super("SESSION", session1.getSender(), proofMessage.getMessage());
-        setProofMessage(proofMessage);
-        setSession1(session1);
-        setSession2(session2);
+        setReceiver(proofMessage.getSender());
+        setSession1(new SessionKey(session1.getMessage()));
+        setSession2(new SessionKey(session2.getMessage()));
     }
 
-    public ProofMessage getProofMessage() { return proofMessage; }
+    public void setReceiver(int receiver) { this.receiver = receiver; }
 
-    public void setProofMessage(ProofMessage proofMessage) { this.proofMessage = proofMessage; }
+    public int getReceiver() { return receiver; }
 
-    public String getReceiver() { return String.valueOf(getProofMessage().getSender()); }
+    public SessionKey getSession1() { return session1; }
 
-    public Message getSession1() { return session1; }
+    public void setSession1(SessionKey session1) { this.session1 = session1; }
 
-    public void setSession1(Message session1) { this.session1 = session1; }
+    public SessionKey getSession2() { return session2; }
 
-    public Message getSession2() { return session2; }
-
-    public void setSession2(Message session2) { this.session2 = session2; }
+    public void setSession2(SessionKey session2) { this.session2 = session2; }
 
     @Override
     public String toSave() {
         return getId() + "," + getName() + "," + getSender() + "," + getReceiver() + ","  + getSession1() + "," + getSession2();
+    }
+
+    @Override
+    public JSONObject toJSON() {
+        JSONObject obj =  new JSONObject();
+        obj.put("id", getId());
+        obj.put("name", getName());
+        obj.put("sender", getSender());
+        obj.put("receiver", getReceiver());
+        obj.put("session1", getSession1());
+        obj.put("session2", getSession2());
+        obj.put("message", toString());
+        return obj;
     }
 }
 
