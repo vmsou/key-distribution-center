@@ -42,15 +42,18 @@ public class KDC extends Entity {
         engine.global.add(msg);
 
         // KDC sends to Bob his session key and alice's session key
-        SessionMessage sessionMessage = receive(msg);   // SessionKey refreshed
+        SessionsMessage sessionsMessage = receive(msg);   // SessionKey refreshed
         if (Main.DEBUG) System.out.println("KDC enviou as chaves de sessões para " +  from.getName());
-        engine.global.add(sessionMessage);
+        engine.global.add(sessionsMessage);
 
-        if (sessionMessage != null) {   // Proof was correct
+        if (sessionsMessage != null) {   // Proof was correct
             if (Main.DEBUG) System.out.println(from.getName() + " comprovou que tinha a chave mestre");
             // Bob receive his sessionKey and sends alice's sessionKey
-            SessionKey fromSessionKey = from.receive(sessionMessage);
-            SessionKey toSessionKey = to.receive(sessionMessage);
+            SessionKey fromSessionKey = from.receive(sessionsMessage);
+            SessionMessage aliceSession = new SessionMessage(from.getId(), sessionsMessage.getSession2().toBytes());
+            engine.global.add(aliceSession);
+            SessionKey toSessionKey = to.receive(aliceSession);
+
             if (Main.DEBUG) System.out.println(from.getName() + " recebe sua chave de sessão e envia para " + to.getName());
 
             // Alice sends nonce to bob
@@ -67,7 +70,7 @@ public class KDC extends Entity {
             if (Main.DEBUG) System.out.println(to.getName() + " esta verificando o nonce");
             if (to.verifyNonce(nonceMessage, fromNonce, toSessionKey)) {
                 if (Main.DEBUG) System.out.println("Nonce correto.");
-                byte[] msgSessionDecrypted = sessionMessage.decrypt(toSessionKey);
+                byte[] msgSessionDecrypted = sessionsMessage.decrypt(toSessionKey);
                 byte[] msgMasterEncrypted = AES.encrypt(msgSessionDecrypted, to.getMasterKey());
 
                 return new SendMessage(
@@ -82,7 +85,7 @@ public class KDC extends Entity {
         return null;
     }
 
-    public SessionMessage receive(ProofMessage proofMessage) throws IllegalBlockSizeException, NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException {
+    public SessionsMessage receive(ProofMessage proofMessage) throws IllegalBlockSizeException, NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException {
         int sender = proofMessage.getSender();
         MasterKey senderKey = getMaster(sender);
 
@@ -111,7 +114,7 @@ public class KDC extends Entity {
 
             resetSessionKey();
 
-            return new SessionMessage(getId(), proofMessage.getSender(), proofMessage.getMessage(), session1, session2);
+            return new SessionsMessage(getId(), proofMessage.getSender(), proofMessage.getMessage(), session1, session2);
         }
         resetSessionKey();
         return null;

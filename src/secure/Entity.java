@@ -73,7 +73,7 @@ class UserEntity extends Entity {
 
     }
 
-    public Message send(SessionMessage sessionMessage) {
+    public Message send(SessionsMessage sessionMessage) {
         // Send session key
         return new Message(
                 getId(),
@@ -86,14 +86,12 @@ class UserEntity extends Entity {
                 AES.encrypt(nonce, sessionKey));
     }
 
-    public SessionKey receive(SessionMessage sessionMessage) throws IllegalBlockSizeException, NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException {
-        byte[] encryptedSessionKey;
-        if (sessionMessage.getReceiver() == getId())
-            encryptedSessionKey = sessionMessage.getSession1().toBytes();
-        else
-            encryptedSessionKey = sessionMessage.getSession2().toBytes();
+    public SessionKey receive(SessionsMessage message) throws IllegalBlockSizeException, NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException {
+        return new SessionKey(AES.decrypt(message.getSession1().toBytes(), masterKey));
+    }
 
-        return new SessionKey(AES.decrypt(encryptedSessionKey, masterKey));
+    public SessionKey receive(SessionMessage message) throws IllegalBlockSizeException, NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException {
+        return new SessionKey(AES.decrypt(message.getMessage(), masterKey));
     }
 
     public NonceMessage receive(NonceMessage nonceMessage, SessionKey sessionKey) throws IllegalBlockSizeException, NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException {

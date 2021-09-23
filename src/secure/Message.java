@@ -133,11 +133,12 @@ class ProofMessage extends Message {
     }
 
 }
-class SessionMessage extends Message {
+
+class SessionsMessage extends Message {
     private int receiver;
     private SessionKey session1, session2;
 
-    public SessionMessage(JSONObject obj) {
+    public SessionsMessage(JSONObject obj) {
         super(
             obj.getInt("id"),
             obj.getString("name"),
@@ -149,8 +150,8 @@ class SessionMessage extends Message {
         setSession2(new SessionKey(obj.getString("session2").getBytes(StandardCharsets.UTF_8)));
     }
 
-    public SessionMessage(int sender, int receiver, byte[] message, SessionKey session1, SessionKey session2) {
-        super("SESSION", sender, message);
+    public SessionsMessage(int sender, int receiver, byte[] message, SessionKey session1, SessionKey session2) {
+        super("SESSIONS", sender, message);
         setReceiver(receiver);
         setSession1(session1);
         setSession2(session2);
@@ -179,6 +180,12 @@ class SessionMessage extends Message {
         obj.put("session2", getSession2());
         obj.put("message", toString());
         return obj;
+    }
+}
+
+class SessionMessage extends Message {
+    public SessionMessage(int sender, byte[] message) {
+        super("SESSION", sender, message);
     }
 }
 
