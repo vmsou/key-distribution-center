@@ -1,8 +1,6 @@
 package secure;
 
-
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 public class Client {
     Users users;

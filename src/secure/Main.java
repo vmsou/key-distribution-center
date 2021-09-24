@@ -9,15 +9,15 @@ public class Main {
 	    Engine engine = new Engine();
 
         Lambda[] lambdas = {
-                new Lambda() { public int perform(int x) { return x + 3; }},
-                new Lambda() { public int perform(int x) { return x * 3; }}
+                x -> x + 3,
+                x -> x * 3
         };
 
-        UserEntity bob = engine.getUser(1);
+        UserEntity bob = engine.user;
 	    UserEntity alice = engine.getUser(2);
 
 	    engine.user.setLambda(alice.getId(), lambdas[0]);
-	    alice.setLambda(bob.getId(), lambdas[1]);
+	    alice.setLambda(bob.getId(), lambdas[0]);
 
 	    engine.send(alice.getId(), "MESSAGE");
 
