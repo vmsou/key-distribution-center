@@ -41,12 +41,13 @@ class UserEntity extends Entity {
     static int count = 1;
     private MasterKey masterKey;
     private Messages messages;
-    private Lambda lambda;
+    private Lambdas lambdas;
 
     public UserEntity(JSONObject obj) {
         super(obj.getInt("id"), obj.getString("name"));
         setMasterKey(new MasterKey(obj.getString("masterKey").getBytes(StandardCharsets.UTF_8)));
         setMessages(new Messages());
+        setLambdas(new Lambdas());
     }
 
     public UserEntity(int id, String name, MasterKey masterKey) {
@@ -99,7 +100,7 @@ class UserEntity extends Entity {
     public NonceMessage receive(NonceMessage nonceMessage, SessionKey sessionKey) throws IllegalBlockSizeException, NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException {
         byte[] decryptedNonce = AES.decrypt(nonceMessage.getMessage(), sessionKey);
         int nonce = ByteBuffer.wrap(decryptedNonce).getInt();
-        int newNonce = nonceFunc(nonce);
+        int newNonce = nonceFunc(nonceMessage.getSender(), nonce);
         return new NonceMessage(
                 getId(),
                 AES.encrypt(nonceMessage.getSender(), masterKey),
@@ -112,12 +113,13 @@ class UserEntity extends Entity {
 
         int nonce1 = ByteBuffer.wrap(decryptedOldNonce).getInt();
         int nonce2 = ByteBuffer.wrap(decryptedNewNonce).getInt();
-        int correctNonce = nonceFunc(nonce1);
+        int correctNonce = nonceFunc(newNonce.getSender(), nonce1);
 
         return nonce2 == correctNonce;
     }
 
-    public int nonceFunc(int nonce) {
+    public int nonceFunc(int id, int nonce) {
+        Lambda lambda = getLambda(id);
         return lambda.perform(nonce);
     }
 
@@ -130,9 +132,29 @@ class UserEntity extends Entity {
 
     public void setMessages(Messages messages) { this.messages = messages; }
 
-    public Lambda getLambda() { return lambda; }
+    public Lambdas getLambdas() { return lambdas; }
 
-    public void setLambda(Lambda lambda) { this.lambda = lambda; }
+    public void setLambdas(Lambdas lambdas) { this.lambdas = lambdas; }
+
+    public Lambda getLambda(int id) {
+        try {
+            return lambdas.get(id);
+        } catch (Exception e) {
+            System.out.println("Não foi possível receber uma lambda.");
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void setLambda(int id, Lambda lambda) {
+        try {
+            lambdas.put(id, lambda);
+        } catch (Exception e) {
+            System.out.println("Não foi possível atribuir uma lambda.");
+            e.printStackTrace();
+        }
+
+    }
 
     @Override
     public String toString() {
