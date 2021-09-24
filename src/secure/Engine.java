@@ -27,11 +27,12 @@ public class Engine {
         try {
             UserEntity to = getUser(id);
             Message msg = kdc.send(user, to, message);
-            client.send(msg);
-            to.add(msg);
+            if (msg != null) {
+                client.send(msg);
+                to.add(msg);
+            }
         } catch (Exception e){
             System.out.println("Não foi possível enviar a mensagem.");
-            e.printStackTrace();
         }
 
     }
@@ -53,7 +54,7 @@ public class Engine {
         }
     }
 
-    public<T extends Entity> void save (EntityContainer<T> data, String filename) {
+    public<T extends Entity> void save(EntityContainer<T> data, String filename) {
         try {
             FileWriter fw = new FileWriter(filename);
             fw.write(data.toSave());
@@ -63,7 +64,7 @@ public class Engine {
         }
     }
 
-    public<T extends Entity> void save (T data, String filename) {
+    public<T extends Entity> void save(T data, String filename) {
         try {
             FileWriter fw = new FileWriter(filename);
             fw.write(data.toSave());
@@ -78,11 +79,7 @@ public class Engine {
         if (file == null) return null;
         JSONObject obj = new JSONObject(file);
         if (obj.isEmpty()) return null;
-        return new UserEntity(
-                obj.getInt("id"),
-                obj.getString("name"),
-                new MasterKey(obj.getString("masterKey").getBytes(StandardCharsets.UTF_8))
-        );
+        return new UserEntity(obj);
     }
 
     public void close() {

@@ -41,6 +41,7 @@ class UserEntity extends Entity {
     static int count = 1;
     private MasterKey masterKey;
     private Messages messages;
+    private Lambda lambda;
 
     public UserEntity(JSONObject obj) {
         super(obj.getInt("id"), obj.getString("name"));
@@ -83,7 +84,7 @@ class UserEntity extends Entity {
     public NonceMessage send(int nonce, int receiver, SessionKey sessionKey) throws IllegalBlockSizeException, NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException {
         return new NonceMessage(
                 getId(),
-                AES.encrypt(receiver, sessionKey),
+                AES.encrypt(receiver, masterKey),
                 AES.encrypt(nonce, sessionKey));
     }
 
@@ -101,7 +102,7 @@ class UserEntity extends Entity {
         int newNonce = nonceFunc(nonce);
         return new NonceMessage(
                 getId(),
-                AES.encrypt(nonceMessage.getSender(), sessionKey),
+                AES.encrypt(nonceMessage.getSender(), masterKey),
                 AES.encrypt(newNonce, sessionKey));
     }
 
@@ -117,7 +118,7 @@ class UserEntity extends Entity {
     }
 
     public int nonceFunc(int nonce) {
-        return nonce + 1;
+        return lambda.perform(nonce);
     }
 
     // Getters and Setters
@@ -128,6 +129,10 @@ class UserEntity extends Entity {
     public Messages getMessages() { return messages; }
 
     public void setMessages(Messages messages) { this.messages = messages; }
+
+    public Lambda getLambda() { return lambda; }
+
+    public void setLambda(Lambda lambda) { this.lambda = lambda; }
 
     @Override
     public String toString() {

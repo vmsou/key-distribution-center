@@ -43,11 +43,14 @@ public class KDC extends Entity {
 
         // KDC sends to Bob his session key and alice's session key
         SessionsMessage sessionsMessage = receive(msg);   // SessionKey refreshed
-        if (Main.DEBUG) System.out.println("KDC enviou as chaves de sessões para " +  from.getName());
-        engine.client.send(sessionsMessage);
 
         if (sessionsMessage != null) {   // Proof was correct
-            if (Main.DEBUG) System.out.println(from.getName() + " comprovou que tinha a chave mestre");
+            if (Main.DEBUG)  {
+                System.out.println(from.getName() + " comprovou que tinha a chave mestre");
+                System.out.println("KDC enviou as chaves de sessões para " +  from.getName());
+            }
+
+            engine.client.send(sessionsMessage);
             // Bob receive his sessionKey and sends alice's sessionKey
             SessionKey fromSessionKey = from.receive(sessionsMessage);
             SessionMessage aliceSession = new SessionMessage(from.getId(), msg.getReceiver(), sessionsMessage.getSession2().toBytes());
@@ -80,8 +83,7 @@ public class KDC extends Entity {
             } else {
                 System.out.println("Nonce falhou.");
             }
-        } else
-            System.out.println("Prova de identidade falhou");
+        }
         return null;
     }
 
