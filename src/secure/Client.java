@@ -20,41 +20,20 @@ public class Client {
     public void send(Message m) { messages.put(m.getId(), m); }
 
     public Users getUsersData(String filename) {
-        Users usrs = new Users();
-        int id = UserEntity.count;
         String file = Engine.fstream(filename);
-        if (file == null || file.isEmpty()) return usrs;
+        if (file == null || file.isEmpty()) return new Users();
         JSONArray arr = new JSONArray(file);
-        if (arr.isEmpty()) return usrs;
+        if (arr.isEmpty()) return new Users();
 
-        for (int i = 0; i < arr.length(); ++i) {
-            JSONObject obj = arr.getJSONObject(i);
-            id = obj.getInt("id");
-            usrs.put(obj.getInt("id"), new UserEntity(obj));
-            ++id;
-        }
-
-        UserEntity.count = id;
-        return usrs;
+        return new Users(arr);
     }
 
     public Messages getMessagesData(String filename) {
-        Messages msgs = new Messages();
-        int id = Message.count;
         String file = Engine.fstream(filename);
-        if (file == null || file.isEmpty()) return msgs;
+        if (file == null || file.isEmpty()) return new Messages();
         JSONArray arr = new JSONArray(file);
-        if (arr.isEmpty()) return msgs;
-
-        for (int i = 0; i < arr.length(); ++i) {
-            JSONObject obj = arr.getJSONObject(i);
-            id = obj.getInt("id");
-            msgs.put(id, new Message(obj));
-            ++id;
-        }
-        Message.count = id;
-        return msgs;
-
+        if (arr.isEmpty()) return new Messages();
+        return new Messages(arr);
     }
 
     public void showUsers() {

@@ -1,6 +1,7 @@
 package secure;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 
@@ -16,6 +17,34 @@ public abstract class EntityContainer<T extends Entity> extends HashMap<Integer,
     }
 }
 
-class Users extends EntityContainer<UserEntity> {}
+class Users extends EntityContainer<UserEntity> {
+    public Users() { super(); }
 
-class Messages extends EntityContainer<Message> {}
+    public Users(JSONArray arr) {
+        super();
+        int id = UserEntity.count;
+        for (int i = 0; i < arr.length(); ++i) {
+            JSONObject obj = arr.getJSONObject(i);
+            id = obj.getInt("id");
+            put(obj.getInt("id"), new UserEntity(obj));
+            ++id;
+        }
+        UserEntity.count = id;
+    }
+}
+
+class Messages extends EntityContainer<Message> {
+    public Messages() { super(); }
+
+    public Messages(JSONArray arr) {
+        super();
+        int id = Message.count;
+        for (int i = 0; i < arr.length(); ++i) {
+            JSONObject obj = arr.getJSONObject(i);
+            id = obj.getInt("id");
+            put(obj.getInt("id"), new Message(obj));
+            ++id;
+        }
+        UserEntity.count = id;
+    }
+}
