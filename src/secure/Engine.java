@@ -86,7 +86,7 @@ public class Engine {
         if (file == null) return null;
         JSONObject obj = new JSONObject(file);
         if (obj.isEmpty()) return null;
-        return new UserEntity(client.lambdas, obj);
+        return new UserEntity(client, obj);
     }
 
     public void close() {

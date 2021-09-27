@@ -43,11 +43,11 @@ class UserEntity extends Entity {
     private Messages messages;
     private Lambdas lambdas;
 
-    public UserEntity(Lambda[] source, JSONObject obj) {
+    public UserEntity(Client client, JSONObject obj) {
         super(obj.getInt("id"), obj.getString("name"));
         setMasterKey(new MasterKey(obj.getString("masterKey").getBytes(StandardCharsets.UTF_8)));
         setMessages(new Messages());
-        setLambdas(new Lambdas(source, obj.getJSONObject("lambdas")));
+        setLambdas(new Lambdas(client, obj.getJSONObject("lambdas")));
     }
 
     public UserEntity(int id, String name, MasterKey masterKey) {

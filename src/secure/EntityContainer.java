@@ -20,7 +20,7 @@ public abstract class EntityContainer<T extends Entity> extends HashMap<Integer,
 class Users extends EntityContainer<UserEntity> {
     public Users() { super(); }
 
-    public Users(Lambda[] source, JSONArray arr) {
+    public Users(Client source, JSONArray arr) {
         super();
         int id = UserEntity.count;
         for (int i = 0; i < arr.length(); ++i) {

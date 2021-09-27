@@ -26,7 +26,7 @@ public class Client {
         JSONArray arr = new JSONArray(file);
         if (arr.isEmpty()) return new Users();
 
-        return new Users(lambdas, arr);
+        return new Users(this, arr);
     }
 
     public Messages getMessagesData(String filename) {

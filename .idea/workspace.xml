@@ -5,18 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8e20795b-40b0-4b9d-be93-4bcade662f6d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/data/messages.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/key-distribution-center.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/secure/Menu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/key-distribution-center.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/data.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/data.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/users.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/users.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/secure/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/secure/Client.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/secure/Engine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/secure/Engine.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/secure/Entity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/secure/Entity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/secure/EntityContainer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/secure/EntityContainer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/secure/Lambda.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/secure/Lambda.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/secure/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/secure/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,7 +125,8 @@
       <workItem from="1632523657077" duration="30000" />
       <workItem from="1632523714926" duration="714000" />
       <workItem from="1632528313286" duration="991000" />
-      <workItem from="1632763595816" duration="1076000" />
+      <workItem from="1632763595816" duration="1369000" />
+      <workItem from="1632769366680" duration="300000" />
     </task>
     <task id="LOCAL-00001" summary="Project import fix">
       <created>1632236950364</created>
@@ -390,7 +387,14 @@
       <option name="project" value="LOCAL" />
       <updated>1632521587868</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="Lambdas JSON load and save.">
+      <created>1632765728321</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1632765728321</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -408,7 +412,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="MasterKey now added to KDC after create." />
     <MESSAGE value="Debug mode added." />
     <MESSAGE value="genKey fixed to ignore ','" />
     <MESSAGE value="Send system fixed. Message logging." />
@@ -433,6 +436,7 @@
     <MESSAGE value="Users and Messages container JSONArray constructor" />
     <MESSAGE value="Lambda from abstract to interface" />
     <MESSAGE value="Project Commit." />
-    <option name="LAST_COMMIT_MESSAGE" value="Project Commit." />
+    <MESSAGE value="Lambdas JSON load and save." />
+    <option name="LAST_COMMIT_MESSAGE" value="Lambdas JSON load and save." />
   </component>
 </project>
