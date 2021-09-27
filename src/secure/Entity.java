@@ -173,6 +173,7 @@ class UserEntity extends Entity {
         obj.put("id", getId());
         obj.put("name", getName());
         obj.put("masterKey", masterKey.toString());
+        obj.put("lambdas", lambdas.toJSON());
         return obj;
     }
 

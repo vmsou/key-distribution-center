@@ -14,4 +14,15 @@ class Lambdas extends HashMap<Integer, Lambda> {
             put(Integer.parseInt(k), source.lambdas[obj.getInt(k)]);
         }
     }
+
+    public String toSave() { return toJSON().toString(1); }
+
+    public JSONObject toJSON() {
+        JSONObject obj = new JSONObject();
+        int i = 0;
+        for (Integer to : keySet())
+            obj.put(String.valueOf(to), i);
+
+        return obj;
+    }
 }

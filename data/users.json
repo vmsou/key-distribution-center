@@ -2,11 +2,13 @@
  {
   "masterKey": "09f2f4ea-2c45-4fef-b946-f326ccc0",
   "name": "Bob",
+  "lambdas": {"2": 0},
   "id": 1
  },
  {
   "masterKey": "b9459e5d-0cf8-4700-b618-89c38863",
   "name": "Alice",
+  "lambdas": {"1": 0},
   "id": 2
  }
 ]
