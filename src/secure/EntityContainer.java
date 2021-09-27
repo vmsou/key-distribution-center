@@ -42,9 +42,20 @@ class Messages extends EntityContainer<Message> {
         for (int i = 0; i < arr.length(); ++i) {
             JSONObject obj = arr.getJSONObject(i);
             id = obj.getInt("id");
-            put(obj.getInt("id"), new Message(obj));
+            put(id, createMessage(obj));
             ++id;
         }
         Message.count = id;
+    }
+
+    public Message createMessage(JSONObject obj) {
+        return switch (obj.getString("name")) {
+            case "PROOF" -> new ProofMessage(obj);
+            case "SESSIONS" -> new SessionsMessage(obj);
+            case "SESSION" -> new SessionMessage(obj);
+            case "NONCE" -> new NonceMessage(obj);
+            case "SEND" -> new SendMessage(obj);
+            default -> new Message(obj);
+        };
     }
 }

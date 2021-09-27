@@ -92,12 +92,7 @@ class ProofMessage extends Message {
     private byte[] receiver;
 
     public ProofMessage(JSONObject obj) {
-        super(
-            obj.getInt("id"),
-            obj.getString("name"),
-            obj.getInt("sender"),
-            obj.getString("message").getBytes(StandardCharsets.UTF_8)
-        );
+        super(obj);
         setProof(obj.getString("proof").getBytes(StandardCharsets.UTF_8));
         setReceiver(obj.getString("receiver").getBytes(StandardCharsets.UTF_8));
     }
@@ -137,6 +132,12 @@ class ProofMessage extends Message {
 class SessionMessage extends Message {
     private byte[] receiver;
 
+    // Constructors
+    public SessionMessage(JSONObject obj) {
+        super(obj);
+        setReceiver(obj.getString("receiver").getBytes(StandardCharsets.UTF_8));
+    }
+
     public SessionMessage(int sender, byte[] receiver, byte[] message) {
         super("SESSION", sender, message);
         setReceiver(receiver);
@@ -163,13 +164,9 @@ class SessionsMessage extends Message {
     private int receiver;
     private SessionKey session1, session2;
 
+    // Constructors
     public SessionsMessage(JSONObject obj) {
-        super(
-            obj.getInt("id"),
-            obj.getString("name"),
-            obj.getInt("sender"),
-            obj.getString("message").getBytes(StandardCharsets.UTF_8)
-        );
+        super(obj);
         setReceiver(obj.getInt("receiver"));
         setSession1(new SessionKey(obj.getString("session1").getBytes(StandardCharsets.UTF_8)));
         setSession2(new SessionKey(obj.getString("session2").getBytes(StandardCharsets.UTF_8)));
@@ -182,6 +179,7 @@ class SessionsMessage extends Message {
         setSession2(session2);
     }
 
+    // Getters and Setters
     public void setReceiver(int receiver) { this.receiver = receiver; }
 
     public int getReceiver() { return receiver; }
@@ -211,11 +209,18 @@ class SessionsMessage extends Message {
 class NonceMessage extends Message {
     private byte[] receiver;
 
+    // Constructors
+    public NonceMessage(JSONObject obj) {
+        super(obj);
+        setReceiver(obj.getString("receiver").getBytes(StandardCharsets.UTF_8));
+    }
+
     public NonceMessage(int sender, byte[] receiver, byte[] message) {
         super("NONCE", sender, message);
         setReceiver(receiver);
     }
 
+    // Getters and Setters
     public byte[] getReceiver() { return receiver; }
 
     public void setReceiver(byte[] receiver) { this.receiver = receiver; }
@@ -236,6 +241,11 @@ class SendMessage extends Message {
     private int receiver;
 
     // Constructors
+    public SendMessage(JSONObject obj) {
+        super(obj);
+        setReceiver(obj.getInt("receiver"));
+    }
+
     public SendMessage(int sender, int receiver, byte[] message) {
         super("SEND", sender, message);
         setReceiver(receiver);
