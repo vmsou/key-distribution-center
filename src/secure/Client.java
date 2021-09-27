@@ -5,11 +5,14 @@ import org.json.JSONArray;
 public class Client {
     Users users;
     Messages messages;
+    Lambda[] lambdas;
 
     // Constructors
     public Client() {
+        lambdas = genLambdas();
         users = getUsersData("data/users.json");
         messages = getMessagesData("data/messages.json");
+
     }
 
     // Methods
@@ -23,7 +26,7 @@ public class Client {
         JSONArray arr = new JSONArray(file);
         if (arr.isEmpty()) return new Users();
 
-        return new Users(arr);
+        return new Users(lambdas, arr);
     }
 
     public Messages getMessagesData(String filename) {
@@ -32,6 +35,13 @@ public class Client {
         JSONArray arr = new JSONArray(file);
         if (arr.isEmpty()) return new Messages();
         return new Messages(arr);
+    }
+
+    public Lambda[] genLambdas() {
+        return new Lambda[]{
+                x -> x + 3,
+                x -> x * 3
+        };
     }
 
     public void showUsers() {

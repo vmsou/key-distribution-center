@@ -4,7 +4,20 @@
     <option name="SCOPE_TYPE" value="3" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8e20795b-40b0-4b9d-be93-4bcade662f6d" name="Changes" comment="" />
+    <list default="true" id="8e20795b-40b0-4b9d-be93-4bcade662f6d" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/data/messages.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/key-distribution-center.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/secure/Menu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/key-distribution-center.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/users.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/users.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/secure/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/secure/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/secure/Engine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/secure/Engine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/secure/Entity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/secure/Entity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/secure/EntityContainer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/secure/EntityContainer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/secure/Lambda.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/secure/Lambda.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/secure/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/secure/Main.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -44,7 +57,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Downloads/key-distribution-center-master/key-distribution-center-master" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.0" />
@@ -53,6 +66,9 @@
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Git\key-distribution-center" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Git\key-distribution-center\.idea" />
     </key>
   </component>
   <component name="RunManager">
@@ -109,6 +125,11 @@
       <workItem from="1632487714809" duration="3020000" />
       <workItem from="1632501725439" duration="16000" />
       <workItem from="1632515093460" duration="367000" />
+      <workItem from="1632521348832" duration="672000" />
+      <workItem from="1632523657077" duration="30000" />
+      <workItem from="1632523714926" duration="714000" />
+      <workItem from="1632528313286" duration="991000" />
+      <workItem from="1632763595816" duration="1076000" />
     </task>
     <task id="LOCAL-00001" summary="Project import fix">
       <created>1632236950364</created>
@@ -355,7 +376,21 @@
       <option name="project" value="LOCAL" />
       <updated>1632515454568</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="Project Commit.">
+      <created>1632521401392</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1632521401392</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Project Commit.">
+      <created>1632521587868</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1632521587868</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -373,7 +408,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Data load fixed." />
     <MESSAGE value="MasterKey now added to KDC after create." />
     <MESSAGE value="Debug mode added." />
     <MESSAGE value="genKey fixed to ignore ','" />
@@ -398,6 +432,7 @@
     <MESSAGE value="Lambdas map." />
     <MESSAGE value="Users and Messages container JSONArray constructor" />
     <MESSAGE value="Lambda from abstract to interface" />
-    <option name="LAST_COMMIT_MESSAGE" value="Lambda from abstract to interface" />
+    <MESSAGE value="Project Commit." />
+    <option name="LAST_COMMIT_MESSAGE" value="Project Commit." />
   </component>
 </project>

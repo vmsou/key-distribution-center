@@ -10,6 +10,7 @@ import java.nio.file.Path;
 
 public class Engine {
     Client client;
+    Menus menus;
     KDC kdc;
     UserEntity user;
 
@@ -17,12 +18,17 @@ public class Engine {
     public Engine() {
         new File("data").mkdir();
         setClient(new Client());
+        setMenus(new Menus(this));
         setKdc(new KDC(this));
         setUser(load("data/data.json"));
         System.out.println();
     }
 
     // Methods
+    public void run() {
+        menus.loadMenu(MenuID.MENU_MAIN);
+    }
+
     public void send(int id, String message) {
         try {
             UserEntity to = getUser(id);
@@ -30,6 +36,7 @@ public class Engine {
             if (msg != null) {
                 client.send(msg);
                 to.add(msg);
+                System.out.println("Mensagem enviada.");
             }
         } catch (Exception e){
             System.out.println("Não foi possível enviar a mensagem.");
@@ -79,7 +86,7 @@ public class Engine {
         if (file == null) return null;
         JSONObject obj = new JSONObject(file);
         if (obj.isEmpty()) return null;
-        return new UserEntity(obj);
+        return new UserEntity(client.lambdas, obj);
     }
 
     public void close() {
@@ -96,6 +103,10 @@ public class Engine {
     public Client getClient() { return client; }
 
     public void setClient(Client client) { this.client = client; }
+
+    public Menus getMenus() { return menus; }
+
+    public void setMenus(Menus menus) { this.menus = menus; }
 
     public KDC getKdc() { return kdc; }
 

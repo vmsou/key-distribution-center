@@ -20,13 +20,13 @@ public abstract class EntityContainer<T extends Entity> extends HashMap<Integer,
 class Users extends EntityContainer<UserEntity> {
     public Users() { super(); }
 
-    public Users(JSONArray arr) {
+    public Users(Lambda[] source, JSONArray arr) {
         super();
         int id = UserEntity.count;
         for (int i = 0; i < arr.length(); ++i) {
             JSONObject obj = arr.getJSONObject(i);
             id = obj.getInt("id");
-            put(obj.getInt("id"), new UserEntity(obj));
+            put(obj.getInt("id"), new UserEntity(source, obj));
             ++id;
         }
         UserEntity.count = id;
@@ -45,6 +45,6 @@ class Messages extends EntityContainer<Message> {
             put(obj.getInt("id"), new Message(obj));
             ++id;
         }
-        UserEntity.count = id;
+        Message.count = id;
     }
 }
