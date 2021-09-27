@@ -137,8 +137,10 @@ class MainMenu extends Menu {
     public void addOptions() {
         add(new Option("Mandar Mensagem") {
             public void action() {
+                engine.user.showContacts();
+                System.out.println();
                 Scanner sc = new Scanner(System.in);
-                System.out.print("ID: ");
+                System.out.print("Para ID: ");
                 String idStr = sc.next();
                 if (isDigit(idStr)) {
                     System.out.print("Mensagem: ");

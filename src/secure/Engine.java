@@ -16,7 +16,7 @@ public class Engine {
 
     // Constructors
     public Engine() {
-        new File("data").mkdir();
+        if (new File("data").mkdir()) System.out.println("data folder created.");;
         setClient(new Client());
         setMenus(new Menus(this));
         setKdc(new KDC(this));
@@ -41,7 +41,6 @@ public class Engine {
         } catch (Exception e){
             System.out.println("Não foi possível enviar a mensagem.");
         }
-
     }
 
     public UserEntity create(String name) {

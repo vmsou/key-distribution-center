@@ -66,6 +66,12 @@ class UserEntity extends Entity {
             System.out.println(m.decryptedText(masterKey));
     }
 
+    public void showContacts() {
+        System.out.println("Contatos de " + getName());
+        for (Integer i : lambdas.keySet())
+            System.out.println("- " + i);
+    }
+
     public ProofMessage send(UserEntity receiver, String message) throws IllegalBlockSizeException, NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException {
         return new ProofMessage(
                 getId(),                                    // sender

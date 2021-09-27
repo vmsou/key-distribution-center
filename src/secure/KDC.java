@@ -60,7 +60,7 @@ public class KDC extends Entity {
             if (Main.DEBUG) System.out.println(from.getName() + " recebe sua chave de sessão e envia para " + to.getName());
 
             // Alice sends nonce to bob
-            NonceMessage nonceMessage = to.send(Main.genNonce(), from.getId(), toSessionKey);
+            NonceMessage nonceMessage = to.send(genNonce(), from.getId(), toSessionKey);
             if (Main.DEBUG) System.out.println(to.getName() + " manda nonce para " + from.getName());
             engine.client.send(nonceMessage);
 
@@ -132,6 +132,10 @@ public class KDC extends Entity {
         String str = UUID.randomUUID().toString().substring(0, len);
         return str.getBytes(StandardCharsets.UTF_8);
 
+    }
+
+    public static int genNonce() {
+        return new Random().nextInt();
     }
 
     public void resetSessionKey() {sessionKey.setKey(genKey(32)); }

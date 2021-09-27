@@ -5,10 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8e20795b-40b0-4b9d-be93-4bcade662f6d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/data/data.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/data.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/users.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/users.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/secure/Entity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/secure/Entity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/secure/Lambda.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/secure/Lambda.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/secure/Engine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/secure/Engine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/secure/KDC.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/secure/KDC.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/secure/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/secure/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,7 +121,7 @@
       <workItem from="1632523714926" duration="714000" />
       <workItem from="1632528313286" duration="991000" />
       <workItem from="1632763595816" duration="1369000" />
-      <workItem from="1632769366680" duration="752000" />
+      <workItem from="1632769366680" duration="1090000" />
     </task>
     <task id="LOCAL-00001" summary="Project import fix">
       <created>1632236950364</created>
@@ -397,7 +396,14 @@
       <option name="project" value="LOCAL" />
       <updated>1632769759964</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="UserEntity Lambdas JSON save fixed.">
+      <created>1632770307828</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1632770307828</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -415,7 +421,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="genKey fixed to ignore ','" />
     <MESSAGE value="Send system fixed. Message logging." />
     <MESSAGE value="genKey fix" />
     <MESSAGE value="genKey with UUID" />
@@ -440,6 +445,7 @@
     <MESSAGE value="Project Commit." />
     <MESSAGE value="Lambdas JSON load and save." />
     <MESSAGE value="Lambdas JSON load fixed." />
-    <option name="LAST_COMMIT_MESSAGE" value="Lambdas JSON load fixed." />
+    <MESSAGE value="UserEntity Lambdas JSON save fixed." />
+    <option name="LAST_COMMIT_MESSAGE" value="UserEntity Lambdas JSON save fixed." />
   </component>
 </project>
