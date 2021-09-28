@@ -7,10 +7,6 @@
     <list default="true" id="8e20795b-40b0-4b9d-be93-4bcade662f6d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/data.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/data.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/secure/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/secure/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/secure/KDC.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/secure/KDC.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/secure/Lambda.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/secure/Lambda.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/secure/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/secure/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,7 +47,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Downloads/key-distribution-center-master/key-distribution-center-master" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Documentos/2.Faculdade/1. Ciência da Computação/2º Periodo/2 - Segurança da Informação/Atividades/kdc/key-distribution-center-master" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.0" />
@@ -125,7 +121,7 @@
       <workItem from="1632528313286" duration="991000" />
       <workItem from="1632763595816" duration="1369000" />
       <workItem from="1632769366680" duration="1831000" />
-      <workItem from="1632828663916" duration="3203000" />
+      <workItem from="1632828663916" duration="3816000" />
     </task>
     <task id="LOCAL-00001" summary="Project import fix">
       <created>1632236950364</created>
@@ -421,7 +417,14 @@
       <option name="project" value="LOCAL" />
       <updated>1632771188524</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL-00043" summary="Lambda mapping fixed.">
+      <created>1632832146840</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1632832146840</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -439,7 +442,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="genKey with UUID" />
     <MESSAGE value="JSON lib added" />
     <MESSAGE value="UserEntity toJSON implemented." />
     <MESSAGE value="Engine load JSON implemented" />
@@ -464,6 +466,7 @@
     <MESSAGE value="UserEntity Lambdas JSON save fixed." />
     <MESSAGE value="UserEntity showContacts()." />
     <MESSAGE value="Message JSON save implemented." />
-    <option name="LAST_COMMIT_MESSAGE" value="Message JSON save implemented." />
+    <MESSAGE value="Lambda mapping fixed." />
+    <option name="LAST_COMMIT_MESSAGE" value="Lambda mapping fixed." />
   </component>
 </project>

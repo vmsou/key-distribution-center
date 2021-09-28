@@ -1,6 +1,6 @@
 {
- "masterKey": "09f2f4ea-2c45-4fef-b946-f326ccc1",
+ "masterKey": "09f2f4ea-2c45-4fef-b946-f326ccc0",
  "name": "Bob",
- "lambdas": {"2": 1},
+ "lambdas": {"2": 0},
  "id": 1
 }
