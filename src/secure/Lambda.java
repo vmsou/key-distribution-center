@@ -5,7 +5,14 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Iterator;
 
-public interface Lambda { int perform(int x); }
+public abstract class Lambda {
+    public static int count = 0;
+    protected int id = 0;
+
+    Lambda() { id = count; ++count; }
+
+    abstract int perform(int x);
+}
 
 class Lambdas extends HashMap<Integer, Lambda> {
     public Lambdas(Client source, JSONObject obj) {
@@ -19,9 +26,10 @@ class Lambdas extends HashMap<Integer, Lambda> {
 
     public JSONObject toJSON() {
         JSONObject obj = new JSONObject();
-        int i = 0;
-        for (Integer to : keySet())
-            obj.put(String.valueOf(to), i);
+        for (Integer to : keySet()) {
+            obj.put(String.valueOf(to), get(to).id);
+        }
+
 
         return obj;
     }

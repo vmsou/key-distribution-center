@@ -12,7 +12,6 @@ public class Client {
         lambdas = genLambdas();
         users = getUsersData("data/users.json");
         messages = getMessagesData("data/messages.json");
-
     }
 
     // Methods
@@ -39,8 +38,15 @@ public class Client {
 
     public Lambda[] genLambdas() {
         return new Lambda[]{
-                x -> x + 3,
-                x -> x * 3
+                new Lambda() {
+                    int perform(int x) { return x + 3; }
+                },
+                new Lambda() {
+                    int perform(int x) { return x * 3; }
+                },
+                new Lambda() {
+                    int perform(int x) { return x / 3; }
+                },
         };
     }
 

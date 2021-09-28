@@ -16,14 +16,12 @@ import java.util.Random;
 public class KDC extends Entity {
     private Engine engine;
     private HashMap<Integer, MasterKey> masterKeys; // DON'T EXPOSE
-    private SessionKey sessionKey;
 
     // Constructors
     public KDC(Engine engine) {
         super(0, "KDC");
         setEngine(engine);
         loadMasterKeys();
-        setSessionKey(new SessionKey(genKey(32)));
     }
 
     // Methods
@@ -88,6 +86,7 @@ public class KDC extends Entity {
     }
 
     public SessionsMessage receive(ProofMessage proofMessage) throws IllegalBlockSizeException, NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException {
+        SessionKey sessionKey = genSessionKey();
         int sender = proofMessage.getSender();
         MasterKey senderKey = getMaster(sender);
 
@@ -112,11 +111,8 @@ public class KDC extends Entity {
             // sessionKey encrypted with receiver keys
             SessionKey session2 = new SessionKey(AES.encrypt(sessionKey, receiverKey));
 
-            resetSessionKey();
-
             return new SessionsMessage(getId(), proofMessage.getSender(), encryptedMessage, session1, session2);
         }
-        resetSessionKey();
         return null;
     }
 
@@ -138,7 +134,7 @@ public class KDC extends Entity {
         return new Random().nextInt();
     }
 
-    public void resetSessionKey() {sessionKey.setKey(genKey(32)); }
+    public SessionKey genSessionKey() { return new SessionKey(genKey(32)); }
 
     // Getters and Setters
     public Engine getEngine() { return engine; }
@@ -148,10 +144,6 @@ public class KDC extends Entity {
     public HashMap<Integer, MasterKey> getMasterKeys() { return masterKeys; }
 
     public void setMasterKeys(HashMap<Integer, MasterKey> masterKeys) { this.masterKeys = masterKeys; }
-
-    public SessionKey getSessionKey() { return sessionKey; }
-
-    public void setSessionKey(SessionKey sessionKey) { this.sessionKey = sessionKey; }
 
     @Override
     public String toSave() {
